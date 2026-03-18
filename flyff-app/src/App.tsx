@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Database, GitCompare, Sword, Users, Bug } from 'lucide-react';
 import { ItemManager } from './components/ItemManager';
 import { ItemComparison } from './components/ItemComparison';
@@ -126,6 +127,7 @@ function MainApp() {
 export default function App() {
   return (
     <BrowserRouter>
+      <Analytics />
       <Routes>
         <Route path="/sim/:token" element={<ShareView />} />
         <Route path="*" element={<MainApp />} />
