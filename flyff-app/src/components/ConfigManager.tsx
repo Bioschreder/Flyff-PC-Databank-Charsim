@@ -105,7 +105,9 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
   // ── Delete ────────────────────────────────────────────────────────────────
   async function handleDelete(id: string) {
     setBusy(true);
-    if (isLoggedIn) {
+    // Check if it's a cloud or local config
+    const isCloudConfig = cloud.configs.some(c => c.id === id);
+    if (isLoggedIn && isCloudConfig) {
       await cloud.deleteConfig(id);
     } else {
       const updated = localConfigs.filter(c => c.id !== id);
@@ -169,19 +171,39 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
   // ── Render helpers ────────────────────────────────────────────────────────
   const equippedCount = countEquipped(currentState);
 
-  // Unify cloud + local into a display list
   type DisplayConfig = {
     id: string; name: string; savedAt: string; state: SimulatorState;
     is_public?: boolean; share_token?: string;
+    source: 'cloud' | 'local';
   };
 
+  const cloudList: DisplayConfig[] = cloud.configs.map(c => ({
+    id: c.id, name: c.name,
+    savedAt: new Date(c.updated_at).toLocaleString('de-DE'),
+    state: c.state, is_public: c.is_public, share_token: c.share_token,
+    source: 'cloud',
+  }));
+
+  const localList: DisplayConfig[] = localConfigs.map(c => ({
+    id: c.id, name: c.name, savedAt: c.savedAt,
+    state: c.state, source: 'local',
+  }));
+
+  // Wenn eingeloggt: cloud + lokale nebeneinander; sonst nur lokal
   const displayConfigs: DisplayConfig[] = isLoggedIn
-    ? cloud.configs.map(c => ({
-        id: c.id, name: c.name,
-        savedAt: new Date(c.updated_at).toLocaleString('de-DE'),
-        state: c.state, is_public: c.is_public, share_token: c.share_token,
-      }))
-    : localConfigs;
+    ? [...cloudList, ...localList]
+    : localList;
+
+  async function handleUploadToCloud(cfg: DisplayConfig) {
+    if (!isLoggedIn) return;
+    setBusy(true);
+    await cloud.saveConfig(cfg.name, cfg.state);
+    // Remove from local after upload
+    const updated = localConfigs.filter(c => c.id !== cfg.id);
+    setLocalConfigs(updated);
+    saveLocal(updated);
+    setBusy(false);
+  }
 
   return (
     <div
@@ -266,8 +288,8 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
 
         {/* List */}
         <div className="overflow-y-auto flex-1 p-2 space-y-1.5">
-          {cloud.loading ? (
-            <div className="text-center text-gray-500 text-sm py-8 animate-pulse">Lade...</div>
+          {cloud.loading && isLoggedIn && cloudList.length === 0 ? (
+            <div className="text-center text-gray-500 text-sm py-8 animate-pulse">Lade Cloud-Configs...</div>
           ) : displayConfigs.length === 0 ? (
             <div className="text-center text-gray-500 text-sm py-10">
               Noch keine gespeicherten Konfigurationen.
@@ -275,12 +297,21 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
           ) : (
             displayConfigs.map(cfg => (
               <div
-                key={cfg.id}
-                className="flex items-center gap-2 p-2.5 rounded-lg bg-gray-800 border border-gray-700 hover:border-gray-600"
+                key={cfg.source + cfg.id}
+                className={`flex items-center gap-2 p-2.5 rounded-lg border ${
+                  cfg.source === 'local'
+                    ? 'bg-gray-800/60 border-gray-700/60'
+                    : 'bg-gray-800 border-gray-700 hover:border-gray-600'
+                }`}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-white font-medium truncate">{cfg.name}</span>
+                    {cfg.source === 'local' && (
+                      <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] bg-gray-700 text-gray-400 border border-gray-600 font-semibold">
+                        Lokal
+                      </span>
+                    )}
                     {cfg.is_public && (
                       <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] bg-green-700/40 text-green-300 border border-green-700/50 font-semibold">
                         Öffentlich
@@ -302,18 +333,32 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
                     Laden
                   </button>
 
-                  {/* Overwrite */}
-                  <button
-                    onClick={() => handleOverwrite(cfg.id)}
-                    disabled={busy}
-                    className="px-2 py-1 rounded bg-yellow-700/50 hover:bg-yellow-600/70 text-yellow-200 text-xs transition-colors disabled:opacity-40"
-                    title="Mit aktueller Konfiguration überschreiben"
-                  >
-                    ↑
-                  </button>
+                  {/* Upload local → cloud */}
+                  {cfg.source === 'local' && isLoggedIn && (
+                    <button
+                      onClick={() => handleUploadToCloud(cfg)}
+                      disabled={busy}
+                      className="px-2 py-1 rounded bg-blue-700/50 hover:bg-blue-600/70 text-blue-200 text-xs transition-colors disabled:opacity-40"
+                      title="In Cloud hochladen"
+                    >
+                      ☁
+                    </button>
+                  )}
+
+                  {/* Overwrite (cloud only) */}
+                  {cfg.source === 'cloud' && (
+                    <button
+                      onClick={() => handleOverwrite(cfg.id)}
+                      disabled={busy}
+                      className="px-2 py-1 rounded bg-yellow-700/50 hover:bg-yellow-600/70 text-yellow-200 text-xs transition-colors disabled:opacity-40"
+                      title="Mit aktueller Konfiguration überschreiben"
+                    >
+                      ↑
+                    </button>
+                  )}
 
                   {/* Share (cloud only) */}
-                  {isLoggedIn && (
+                  {isLoggedIn && cfg.source === 'cloud' && (
                     <button
                       onClick={() => handleShare(cfg.id, !!cfg.is_public)}
                       disabled={busy}
@@ -322,7 +367,7 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
                           ? 'bg-green-700/40 hover:bg-red-800/40 text-green-300 hover:text-red-300'
                           : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                       }`}
-                      title={cfg.is_public ? 'Link kopiert – klicken zum Privat setzen' : 'Link erstellen & kopieren'}
+                      title={cfg.is_public ? 'Klicken zum Privat setzen' : 'Link erstellen & kopieren'}
                     >
                       {copiedId === cfg.id ? '✓' : cfg.is_public ? '🔗' : '↗'}
                     </button>
@@ -338,7 +383,7 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
                   </button>
 
                   {/* Delete */}
-                  {confirmDelete === cfg.id ? (
+                  {confirmDelete === cfg.source + cfg.id ? (
                     <>
                       <button
                         onClick={() => handleDelete(cfg.id)}
@@ -356,7 +401,7 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
                     </>
                   ) : (
                     <button
-                      onClick={() => setConfirmDelete(cfg.id)}
+                      onClick={() => setConfirmDelete(cfg.source + cfg.id)}
                       className="px-2 py-1 rounded bg-gray-700 hover:bg-red-800/60 text-gray-400 hover:text-red-300 text-xs transition-colors"
                       title="Löschen"
                     >
