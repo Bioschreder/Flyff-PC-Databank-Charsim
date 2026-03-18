@@ -638,7 +638,7 @@ export function CharacterSimulator({
   const [activeSlot, setActiveSlot] = useState<EquipSlot | null>(null);
   const [activePowerupTab, setActivePowerupTab] = useState(false);
   const [showConfigManager, setShowConfigManager] = useState(false);
-  const [rightTab, setRightTab] = useState<'stats' | 'skills' | 'combat' | 'exptable'>('stats');
+  const [rightTab, setRightTab] = useState<'equip' | 'stats' | 'skills' | 'combat' | 'exptable'>('equip');
 
   // Apply external initialState changes (e.g. shared config loaded from ShareView)
   useEffect(() => {
@@ -813,8 +813,8 @@ export function CharacterSimulator({
       {/* ── 2-Panel Layout ── */}
       <div className="flex-1 flex gap-3 min-h-0">
 
-        {/* ════ LEFT: Character Config ════ */}
-        <div className="w-[360px] shrink-0 flex flex-col gap-3 overflow-y-auto pb-2">
+        {/* ════ LEFT: Job + Base Stats (slim) ════ */}
+        <div className="w-[220px] shrink-0 flex flex-col gap-3 overflow-y-auto pb-2">
 
           {/* Job */}
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
@@ -825,20 +825,20 @@ export function CharacterSimulator({
           {/* Base Stats */}
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-3 space-y-2.5">
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Basis-Stats</div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400 w-12 shrink-0">Geschl.</span>
-              <div className="flex rounded overflow-hidden border border-gray-600">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-gray-400 w-10 shrink-0">Geschl.</span>
+              <div className="flex rounded overflow-hidden border border-gray-600 flex-1">
                 {(['M', 'F'] as const).map(g => (
                   <button
                     key={g}
                     onClick={() => setSimState(prev => ({ ...prev, gender: g }))}
-                    className={`px-3 py-1 text-xs font-medium transition-colors ${
+                    className={`flex-1 py-1 text-xs font-medium transition-colors ${
                       simState.gender === g
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                     }`}
                   >
-                    {g === 'M' ? 'Männlich' : 'Weiblich'}
+                    {g === 'M' ? 'M' : 'W'}
                   </button>
                 ))}
               </div>
@@ -850,60 +850,6 @@ export function CharacterSimulator({
             <StatInput label="DEX"  value={simState.baseDex} onChange={handleBaseStat('baseDex')} min={15} max={700} />
             <StatInput label="INT"  value={simState.baseInt} onChange={handleBaseStat('baseInt')} min={15} max={700} />
           </div>
-
-          {/* Equipment */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-            <EquipmentPanel
-              equipment={simState.equipment}
-              itemMap={itemMap}
-              activeSetBonuses={computed.activeSetBonuses}
-              setEffectsDB={setEffects ?? {}}
-              jobId={simState.jobId}
-              onSlotClick={setActiveSlot}
-              onReset={handleReset}
-            />
-          </div>
-
-          {/* Powerups */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
-            <button
-              onClick={() => setActivePowerupTab(v => !v)}
-              className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-gray-750 transition-colors"
-            >
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Powerups / Buffs
-                {simState.activeBuffIds.length > 0 && (
-                  <span className="ml-1.5 bg-blue-700 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                    {simState.activeBuffIds.length}
-                  </span>
-                )}
-              </span>
-              <span className="text-gray-500 text-xs">{activePowerupTab ? '▲' : '▼'}</span>
-            </button>
-            {activePowerupTab && (
-              <div className="px-3 pb-3 max-h-64 overflow-y-auto border-t border-gray-700">
-                <PowerupPanel
-                  items={items}
-                  activeBuffIds={simState.activeBuffIds}
-                  onToggle={handleBuffToggle}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Active Bonuses */}
-          <ActiveBonusPanel
-            equipment={simState.equipment}
-            itemMap={itemMap}
-            activeSetBonuses={computed.activeSetBonuses}
-            activePowerups={computed.activePowerups}
-            armorSetUpgradeLevel={computed.armorSetUpgradeLevel}
-            totalEvolutionValue={computed.totalEvolutionValue}
-            hitRate={computed.hitRate}
-            blockRate={computed.blockRate}
-            pvpDmgPct={computed.pvpDmgPct}
-            atkSpeedPct={computed.atkSpeedPct}
-          />
         </div>
 
         {/* ════ RIGHT: Tabbed panel ════ */}
@@ -912,6 +858,7 @@ export function CharacterSimulator({
           {/* Tab Bar */}
           <div className="flex gap-1 mb-3 shrink-0 bg-gray-900 border border-gray-700 rounded-xl p-1">
             {([
+              { id: 'equip',    label: 'Ausrüstung',   icon: '🛡️' },
               { id: 'stats',    label: 'Charakter',    icon: '📊' },
               { id: 'skills',   label: 'Skills',       icon: '⚡' },
               { id: 'combat',   label: 'Kampf',        icon: '⚔️' },
@@ -920,20 +867,78 @@ export function CharacterSimulator({
               <button
                 key={tab.id}
                 onClick={() => setRightTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors flex-1 justify-center ${
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm transition-colors flex-1 justify-center ${
                   rightTab === tab.id
                     ? 'bg-blue-700 text-white font-semibold'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
                 }`}
               >
                 <span>{tab.icon}</span>
-                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="hidden lg:inline text-xs">{tab.label}</span>
               </button>
             ))}
           </div>
 
           {/* Tab Content */}
           <div className="flex-1 overflow-y-auto">
+
+            {/* ── AUSRÜSTUNG TAB ── */}
+            {rightTab === 'equip' && (
+              <div className="flex flex-col gap-3">
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+                  <EquipmentPanel
+                    equipment={simState.equipment}
+                    itemMap={itemMap}
+                    activeSetBonuses={computed.activeSetBonuses}
+                    setEffectsDB={setEffects ?? {}}
+                    jobId={simState.jobId}
+                    onSlotClick={setActiveSlot}
+                    onReset={handleReset}
+                  />
+                </div>
+
+                {/* Powerups */}
+                <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => setActivePowerupTab(v => !v)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-gray-750 transition-colors"
+                  >
+                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Powerups / Buffs
+                      {simState.activeBuffIds.length > 0 && (
+                        <span className="ml-1.5 bg-blue-700 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                          {simState.activeBuffIds.length}
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-gray-500 text-xs">{activePowerupTab ? '▲' : '▼'}</span>
+                  </button>
+                  {activePowerupTab && (
+                    <div className="px-3 pb-3 max-h-64 overflow-y-auto border-t border-gray-700">
+                      <PowerupPanel
+                        items={items}
+                        activeBuffIds={simState.activeBuffIds}
+                        onToggle={handleBuffToggle}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Active Bonuses */}
+                <ActiveBonusPanel
+                  equipment={simState.equipment}
+                  itemMap={itemMap}
+                  activeSetBonuses={computed.activeSetBonuses}
+                  activePowerups={computed.activePowerups}
+                  armorSetUpgradeLevel={computed.armorSetUpgradeLevel}
+                  totalEvolutionValue={computed.totalEvolutionValue}
+                  hitRate={computed.hitRate}
+                  blockRate={computed.blockRate}
+                  pvpDmgPct={computed.pvpDmgPct}
+                  atkSpeedPct={computed.atkSpeedPct}
+                />
+              </div>
+            )}
 
             {/* ── STATS TAB ── */}
             {rightTab === 'stats' && (
