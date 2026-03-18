@@ -65,8 +65,6 @@ export function ItemComparison({ items, onRemove }: Props) {
     maxVals[key] = Math.max(...items.map(i => i.stats[key] ?? 0));
   }
 
-  const _colWidth = `${100 / items.length}%`;
-
   return (
     <div className="flex flex-col gap-4 overflow-x-auto">
       {/* Item Headers */}

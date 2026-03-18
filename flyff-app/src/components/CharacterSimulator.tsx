@@ -5,7 +5,7 @@ import { useStatCalculator } from '../hooks/useStatCalculator';
 import type { CharStats, JobData, SkillData, MonsterStats } from '../formulas';
 import {
   calcCharATK, calcDEF, calcSkillDMG, getWeaponFactor,
-  calcDmgVsMonster, calcSkillDmgVsMonster, killsForLevelUp,
+  calcSkillDmgVsMonster,
 } from '../formulas';
 import type {
   SimulatorState, EquipSlot, EquippedItem, FlyffItem, Monster,
@@ -43,11 +43,6 @@ function getWeaponTypeFromItem(item: FlyffItem | undefined): string {
   if (t.includes('KNUCKLE') || sc.includes('knuckle')) return 'Knuckle';
   if (t.includes('YO') || sc.includes('yoyo'))     return 'Yoyo';
   return 'Sword';
-}
-
-function _maxLevelForTier(tier: number): number {
-  if (tier >= 4) return 190;
-  return 120;
 }
 
 // ─── stat helpers ─────────────────────────────────────────────────────────────
@@ -406,8 +401,6 @@ const STAT_DISPLAY: Record<string, [string, string]> = {
 function dstLabel(k: string): [string, string] {
   return STAT_DISPLAY[k] ?? [k.replace('DST_', '').replace(/_/g, ' '), ''];
 }
-
-type _BonusEntry = { label: string; value: number; unit: string; source: string }
 
 interface ActiveBonusPanelProps {
   equipment: Partial<Record<EquipSlot, EquippedItem>>;

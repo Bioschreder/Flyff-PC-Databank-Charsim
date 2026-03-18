@@ -313,12 +313,6 @@ export function ItemConfigPanel({
     return null;
   }
 
-  function _getGemStatsForType(type: GemSlot['gemType']): string[] {
-    if (type === 'ultimate') return gemStats.ultimate;
-    if (type === 'costume') return gemStats.costume;
-    return suitGemStats;
-  }
-
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-end bg-black/60" onClick={onClose}>
       <div
