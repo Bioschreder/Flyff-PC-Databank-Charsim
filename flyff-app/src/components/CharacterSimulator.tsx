@@ -16,6 +16,7 @@ import { ItemConfigPanel } from './ItemConfigPanel';
 import { PowerupPanel } from './PowerupPanel';
 import { CombatStatsPanel, DEFAULT_PARTY, type PartyState } from './CombatStatsPanel';
 import { ConfigManager } from './ConfigManager';
+import { ExpComparisonTable } from './ExpComparisonTable';
 import type { AuthState } from '../hooks/useAuth';
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -637,6 +638,7 @@ export function CharacterSimulator({
   const [activeSlot, setActiveSlot] = useState<EquipSlot | null>(null);
   const [activePowerupTab, setActivePowerupTab] = useState(false);
   const [showConfigManager, setShowConfigManager] = useState(false);
+  const [rightTab, setRightTab] = useState<'stats' | 'skills' | 'combat' | 'exptable'>('stats');
 
   // Apply external initialState changes (e.g. shared config loaded from ShareView)
   useEffect(() => {
@@ -782,16 +784,18 @@ export function CharacterSimulator({
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      <div className="flex items-center justify-between">
-        <div className="text-xl font-bold text-white">Charakter-Simulator</div>
+    <div className="flex flex-col h-full gap-3">
+
+      {/* ── Header ── */}
+      <div className="flex items-center justify-between shrink-0">
+        <h2 className="text-lg font-bold text-white">Charakter-Simulator</h2>
         <button
           onClick={() => setShowConfigManager(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 border border-gray-600 hover:border-gray-500 text-sm text-gray-200 font-semibold transition-colors"
-          title="Konfigurationen speichern und laden"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 border border-gray-600 text-sm text-gray-200 font-medium transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
           </svg>
           Konfigurationen
         </button>
@@ -806,27 +810,29 @@ export function CharacterSimulator({
         />
       )}
 
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 flex-1 min-h-0">
+      {/* ── 2-Panel Layout ── */}
+      <div className="flex-1 flex gap-3 min-h-0">
 
-        {/* ── COL 1: Job + Base Stats ── */}
-        <div className="flex flex-col gap-4 overflow-y-auto">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-            <div className="text-sm font-semibold text-gray-300 mb-3">Klasse</div>
+        {/* ════ LEFT: Character Config ════ */}
+        <div className="w-[360px] shrink-0 flex flex-col gap-3 overflow-y-auto pb-2">
+
+          {/* Job */}
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Klasse</div>
             <JobSelector jobs={jobs} selected={simState.jobId} onSelect={handleJobSelect} />
           </div>
 
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-3">
-            <div className="text-sm font-semibold text-gray-300">Basis-Stats</div>
-
-            {/* Gender toggle */}
+          {/* Base Stats */}
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3 space-y-2.5">
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Basis-Stats</div>
             <div className="flex items-center gap-2">
-              <span className="text-gray-400 text-sm w-10 text-right">Gesch.</span>
+              <span className="text-xs text-gray-400 w-12 shrink-0">Geschl.</span>
               <div className="flex rounded overflow-hidden border border-gray-600">
                 {(['M', 'F'] as const).map(g => (
                   <button
                     key={g}
                     onClick={() => setSimState(prev => ({ ...prev, gender: g }))}
-                    className={`px-4 py-1 text-sm font-semibold transition-colors ${
+                    className={`px-3 py-1 text-xs font-medium transition-colors ${
                       simState.gender === g
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
@@ -837,22 +843,16 @@ export function CharacterSimulator({
                 ))}
               </div>
             </div>
-
-            <StatInput label="Lv."  value={simState.level}    onChange={handleBaseStat('level')}   min={1}  max={200}
-              hint={(() => {
-                const exp = expTable.get(simState.level);
-                return exp ? `EXP für Level-Up: ${fmtK(exp)}` : undefined;
-              })()} />
-            <StatInput label="STR"  value={simState.baseStr}  onChange={handleBaseStat('baseStr')} min={15} max={700} />
-            <StatInput label="STA"  value={simState.baseSta}  onChange={handleBaseStat('baseSta')} min={15} max={700} />
-            <StatInput label="DEX"  value={simState.baseDex}  onChange={handleBaseStat('baseDex')} min={15} max={700} />
-            <StatInput label="INT"  value={simState.baseInt}  onChange={handleBaseStat('baseInt')} min={15} max={700} />
+            <StatInput label="Lv."  value={simState.level}   onChange={handleBaseStat('level')}   min={1}  max={200}
+              hint={expTable.get(simState.level) ? `EXP: ${fmtK(expTable.get(simState.level)!)}` : undefined} />
+            <StatInput label="STR"  value={simState.baseStr} onChange={handleBaseStat('baseStr')} min={15} max={700} />
+            <StatInput label="STA"  value={simState.baseSta} onChange={handleBaseStat('baseSta')} min={15} max={700} />
+            <StatInput label="DEX"  value={simState.baseDex} onChange={handleBaseStat('baseDex')} min={15} max={700} />
+            <StatInput label="INT"  value={simState.baseInt} onChange={handleBaseStat('baseInt')} min={15} max={700} />
           </div>
-        </div>
 
-        {/* ── COL 2: Equipment Panel ── */}
-        <div className="flex flex-col gap-4 overflow-y-auto">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+          {/* Equipment */}
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
             <EquipmentPanel
               equipment={simState.equipment}
               itemMap={itemMap}
@@ -864,17 +864,24 @@ export function CharacterSimulator({
             />
           </div>
 
-          {/* Powerup toggle button */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+          {/* Powerups */}
+          <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
             <button
               onClick={() => setActivePowerupTab(v => !v)}
-              className="text-sm font-semibold text-gray-300 w-full text-left flex justify-between items-center"
+              className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-gray-750 transition-colors"
             >
-              <span>Powerups / Buffs ({simState.activeBuffIds.length} aktiv)</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Powerups / Buffs
+                {simState.activeBuffIds.length > 0 && (
+                  <span className="ml-1.5 bg-blue-700 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {simState.activeBuffIds.length}
+                  </span>
+                )}
+              </span>
               <span className="text-gray-500 text-xs">{activePowerupTab ? '▲' : '▼'}</span>
             </button>
             {activePowerupTab && (
-              <div className="mt-3 max-h-64 overflow-y-auto">
+              <div className="px-3 pb-3 max-h-64 overflow-y-auto border-t border-gray-700">
                 <PowerupPanel
                   items={items}
                   activeBuffIds={simState.activeBuffIds}
@@ -883,67 +890,8 @@ export function CharacterSimulator({
               </div>
             )}
           </div>
-        </div>
 
-        {/* ── COL 3: Character Sheet ── */}
-        <div className="flex flex-col gap-3 overflow-y-auto">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-            <div className="text-sm font-semibold text-gray-300 mb-3">
-              {job?.name ?? '–'} · Lv. {simState.level}
-            </div>
-
-            <div className="space-y-1 mb-4">
-              <StatRow label="STR" value={`${fmt(computed.str)}`} color="text-red-300" />
-              <StatRow label="STA" value={`${fmt(computed.sta)}`} color="text-orange-300" />
-              <StatRow label="DEX" value={`${fmt(computed.dex)}`} color="text-yellow-300" />
-              <StatRow label="INT" value={`${fmt(computed.int)}`} color="text-blue-300" />
-            </div>
-
-            <div className="border-t border-gray-700 pt-3 space-y-1">
-              <StatRow label="HP"  value={fmt(computed.hp)}  color="text-green-400" />
-              <StatRow label="MP"  value={fmt(computed.mp)}  color="text-blue-400"  />
-              <StatRow label="FP"  value={fmt(computed.fp)}  color="text-yellow-400"/>
-              <StatRow label="DEF" value={`${fmt(computed.defMin)}–${fmt(computed.defMax)}`} color="text-gray-300" />
-            </div>
-
-            <div className="border-t border-gray-700 pt-3 mt-3 space-y-1">
-              <div className="text-xs text-gray-500 mb-1">Angriff (Melee)</div>
-              <StatRow label="Waffentyp"     value={weaponType} />
-              <StatRow label="Waffen-Faktor"
-                value={job ? `×${getWeaponFactor(job, weaponType).toFixed(1)}` : '–'} />
-              <StatRow label="Char ATK Min"  value={fmt(charAtkMin)} color="text-orange-400" />
-              <StatRow label="Char ATK Max"  value={fmt(charAtkMax)} color="text-orange-400" />
-              <StatRow label="Crit Rate"     value={`${critRate.toFixed(1)}%`} />
-              <StatRow label="Crit DMG"      value={`×${(2 * (1 + critDmg / 100)).toFixed(2)}`} color="text-red-400" />
-              {computed.monsterDmgPct > 0 && (
-                <StatRow label="PvE DMG"     value={`+${computed.monsterDmgPct.toFixed(0)}%`} color="text-green-400" />
-              )}
-              {computed.addMagic > 0 && (
-                <StatRow label="Magic ATK" value={fmt(computed.addMagic)} color="text-purple-400" />
-              )}
-            </div>
-
-            <div className="border-t border-gray-700 pt-3 mt-3 space-y-1">
-              <div className="text-xs text-gray-500 mb-1">Normalangriff</div>
-              <StatRow label="Normal Min"  value={fmt(charAtkMin)} color="text-green-300" />
-              <StatRow label="Normal Max"  value={fmt(charAtkMax)} color="text-green-300" />
-              <StatRow label="Krit Min"    value={fmt(charAtkMin * 2 * (1 + critDmg / 100))} color="text-red-400" />
-              <StatRow label="Krit Max"    value={fmt(charAtkMax * 2 * (1 + critDmg / 100))} color="text-red-400" />
-            </div>
-
-            {job && (
-              <div className="border-t border-gray-700 pt-3 mt-3 space-y-1">
-                <div className="text-xs text-gray-500 mb-1">Klassen-Multiplikatoren</div>
-                <StatRow label="HP ×"  value={job.hpMultiplier.toFixed(2)}  />
-                <StatRow label="MP ×"  value={job.mpMultiplier.toFixed(2)}  />
-                <StatRow label="FP ×"  value={job.fpMultiplier.toFixed(2)}  />
-                <StatRow label="DEF ×" value={job.defMultiplier.toFixed(2)} />
-                <StatRow label="Block" value={`${(job.blockingRate * 100).toFixed(0)}%`} />
-              </div>
-            )}
-          </div>
-
-          {/* Active Equipment Bonuses */}
+          {/* Active Bonuses */}
           <ActiveBonusPanel
             equipment={simState.equipment}
             itemMap={itemMap}
@@ -958,144 +906,273 @@ export function CharacterSimulator({
           />
         </div>
 
-        {/* ── COL 4: Skills ── */}
-        <div className="flex flex-col gap-3 overflow-y-auto min-h-0">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-            <div className="text-sm font-semibold text-gray-300 mb-2">
-              Skills ({filteredSkills.length})
-            </div>
-            <input
-              placeholder="Skill suchen…"
-              value={skillSearch}
-              onChange={e => setSkillSearch(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
-            />
-          </div>
+        {/* ════ RIGHT: Tabbed panel ════ */}
+        <div className="flex-1 flex flex-col min-w-0 min-h-0">
 
-          <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-            {filteredSkills.map(skill => (
-              <SkillCard
-                key={skill.id}
-                skill={skill}
-                selectedLevel={skillLevels[skill.id] ?? skill.maxLevel}
-                onLevelChange={lvl => setSkillLevels(prev => ({ ...prev, [skill.id]: lvl }))}
-                charAtkMin={charAtkMin}
-                charAtkMax={charAtkMax}
-                critRate={critRate}
-                critDmg={critDmg}
-                monster={monsterStats}
-                charLevel={simState.level}
-                monsterDmgPct={computed.monsterDmgPct}
-              />
+          {/* Tab Bar */}
+          <div className="flex gap-1 mb-3 shrink-0 bg-gray-900 border border-gray-700 rounded-xl p-1">
+            {([
+              { id: 'stats',    label: 'Charakter',    icon: '📊' },
+              { id: 'skills',   label: 'Skills',       icon: '⚡' },
+              { id: 'combat',   label: 'Kampf',        icon: '⚔️' },
+              { id: 'exptable', label: 'EXP/h',        icon: '📈' },
+            ] as const).map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setRightTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors flex-1 justify-center ${
+                  rightTab === tab.id
+                    ? 'bg-blue-700 text-white font-semibold'
+                    : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+              </button>
             ))}
-            {filteredSkills.length === 0 && (
-              <div className="text-center text-gray-500 text-sm py-8">
-                Keine Skills für diese Klasse
-              </div>
-            )}
           </div>
-        </div>
 
-        {/* ── COL 5: Monster Target + Combat Stats ── */}
-        <div className="flex flex-col gap-3 overflow-y-auto min-h-0">
-          {/* Monster Search & Selection */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-            <div className="text-sm font-semibold text-gray-300 mb-2">Monster-Ziel</div>
-            <input
-              placeholder="Monster suchen…"
-              value={monsterSearch}
-              onChange={e => setMonsterSearch(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 mb-2"
-            />
+          {/* Tab Content */}
+          <div className="flex-1 overflow-y-auto">
 
-            {/* Selected monster card */}
-            {selectedMonster && (
-              <div className="bg-gray-900 rounded-lg p-2.5 mb-2 border border-blue-700/40">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-semibold text-blue-300">{selectedMonster.name}</span>
-                  <button onClick={() => setSelectedMonster(null)}
-                    className="text-gray-600 hover:text-gray-400 text-xs">×</button>
-                </div>
-                <div className="text-xs text-gray-500 mb-2">
-                  Lv. {selectedMonster.level} · {selectedMonster.rank}
-                  {selectedMonster.element !== 'None' && ` · ${selectedMonster.element}`}
-                </div>
-                <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">HP</span>
-                    <span className="text-green-400 font-mono">{fmtK(selectedMonster.hp)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">DEF</span>
-                    <span className="text-blue-300 font-mono">{fmt(selectedMonster.def)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">ATK</span>
-                    <span className="text-red-300 font-mono">{fmt(selectedMonster.atkMin)}–{fmt(selectedMonster.atkMax)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">EXP</span>
-                    <span className="text-purple-300 font-mono">{fmtK(selectedMonster.exp)}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Monster list */}
-            <div className="space-y-1 max-h-48 overflow-y-auto">
-              {filteredMonsters.map(m => (
-                <button
-                  key={m.id}
-                  onClick={() => setSelectedMonster(m)}
-                  className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition-colors flex items-center justify-between gap-2 ${
-                    selectedMonster?.id === m.id
-                      ? 'bg-blue-700/30 border border-blue-600/50 text-blue-200'
-                      : 'bg-gray-750 hover:bg-gray-700 border border-transparent text-gray-300'
-                  }`}
-                >
-                  <span className="truncate">{m.name}</span>
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <span className="text-gray-500">Lv.{m.level}</span>
-                    {m.rank !== 'Normal' && m.rank !== 'Low' && (
-                      <span className={`text-[9px] px-1 rounded ${
-                        m.rank === 'Boss' ? 'bg-yellow-900/60 text-yellow-400' :
-                        m.rank === 'Captain' ? 'bg-blue-900/60 text-blue-400' :
-                        'bg-purple-900/60 text-purple-400'
-                      }`}>{m.rank}</span>
+            {/* ── STATS TAB ── */}
+            {rightTab === 'stats' && (
+              <div className="flex flex-col gap-3">
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+                  <div className="text-sm font-semibold text-gray-300 mb-3">
+                    {job?.name ?? '–'} · Lv. {simState.level}
+                    {isMasterJob && (
+                      <span className="ml-2 text-xs text-orange-400 font-normal">Master/Hero</span>
                     )}
                   </div>
-                </button>
-              ))}
-              {filteredMonsters.length === 0 && (
-                <div className="text-center text-gray-600 text-xs py-4">Kein Monster gefunden</div>
-              )}
-              {!monsterSearch && monsters.length > 80 && (
-                <div className="text-center text-gray-600 text-[10px] py-1">
-                  Suche um alle {monsters.length} Monster anzuzeigen
+
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-1 mb-4">
+                    <StatRow label="STR" value={fmt(computed.str)} color="text-red-300" />
+                    <StatRow label="STA" value={fmt(computed.sta)} color="text-orange-300" />
+                    <StatRow label="DEX" value={fmt(computed.dex)} color="text-yellow-300" />
+                    <StatRow label="INT" value={fmt(computed.int)} color="text-blue-300" />
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-3 grid grid-cols-2 gap-x-6 gap-y-1 mb-4">
+                    <StatRow label="HP"  value={fmtK(computed.hp)}  color="text-green-400" />
+                    <StatRow label="MP"  value={fmtK(computed.mp)}  color="text-blue-400"  />
+                    <StatRow label="FP"  value={fmtK(computed.fp)}  color="text-yellow-400"/>
+                    <StatRow label="DEF" value={`${fmt(computed.defMin)}–${fmt(computed.defMax)}`} color="text-gray-300" />
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-3 mb-3">
+                    <div className="text-xs text-gray-500 mb-2">Angriff (Melee)</div>
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                      <StatRow label="Waffentyp"    value={weaponType} />
+                      <StatRow label="Waffen-Fakt." value={job ? `×${getWeaponFactor(job, weaponType).toFixed(1)}` : '–'} />
+                      <StatRow label="ATK Min"      value={fmt(charAtkMin)} color="text-orange-400" />
+                      <StatRow label="ATK Max"      value={fmt(charAtkMax)} color="text-orange-400" />
+                      <StatRow label="Crit Rate"    value={`${critRate.toFixed(1)}%`} />
+                      <StatRow label="Crit DMG"     value={`×${(2 * (1 + critDmg / 100)).toFixed(2)}`} color="text-red-400" />
+                      {computed.monsterDmgPct > 0 && (
+                        <StatRow label="PvE DMG" value={`+${computed.monsterDmgPct.toFixed(0)}%`} color="text-green-400" />
+                      )}
+                      {computed.addMagic > 0 && (
+                        <StatRow label="Magic ATK" value={fmt(computed.addMagic)} color="text-purple-400" />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-3 mb-3">
+                    <div className="text-xs text-gray-500 mb-2">Normalangriff (Ergebnis)</div>
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                      <StatRow label="Normal Min" value={fmt(charAtkMin)} color="text-green-300" />
+                      <StatRow label="Normal Max" value={fmt(charAtkMax)} color="text-green-300" />
+                      <StatRow label="Krit Min"   value={fmt(charAtkMin * 2 * (1 + critDmg / 100))} color="text-red-400" />
+                      <StatRow label="Krit Max"   value={fmt(charAtkMax * 2 * (1 + critDmg / 100))} color="text-red-400" />
+                    </div>
+                  </div>
+
+                  {job && (
+                    <div className="border-t border-gray-700 pt-3">
+                      <div className="text-xs text-gray-500 mb-2">Klassen-Multiplikatoren</div>
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                        <StatRow label="HP ×"  value={job.hpMultiplier.toFixed(2)}  />
+                        <StatRow label="MP ×"  value={job.mpMultiplier.toFixed(2)}  />
+                        <StatRow label="FP ×"  value={job.fpMultiplier.toFixed(2)}  />
+                        <StatRow label="DEF ×" value={job.defMultiplier.toFixed(2)} />
+                        <StatRow label="Block" value={`${(job.blockingRate * 100).toFixed(0)}%`} />
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {/* ── SKILLS TAB ── */}
+            {rightTab === 'skills' && (
+              <div className="flex flex-col gap-3">
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+                  <div className="text-sm font-semibold text-gray-300 mb-2">
+                    Skills ({filteredSkills.length})
+                  </div>
+                  <input
+                    placeholder="Skill suchen…"
+                    value={skillSearch}
+                    onChange={e => setSkillSearch(e.target.value)}
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  {filteredSkills.map(skill => (
+                    <SkillCard
+                      key={skill.id}
+                      skill={skill}
+                      selectedLevel={skillLevels[skill.id] ?? skill.maxLevel}
+                      onLevelChange={lvl => setSkillLevels(prev => ({ ...prev, [skill.id]: lvl }))}
+                      charAtkMin={charAtkMin}
+                      charAtkMax={charAtkMax}
+                      critRate={critRate}
+                      critDmg={critDmg}
+                      monster={monsterStats}
+                      charLevel={simState.level}
+                      monsterDmgPct={computed.monsterDmgPct}
+                    />
+                  ))}
+                  {filteredSkills.length === 0 && (
+                    <div className="text-center text-gray-500 text-sm py-8">
+                      Keine Skills für diese Klasse
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ── KAMPF TAB ── */}
+            {rightTab === 'combat' && (
+              <div className="flex flex-col gap-3">
+                {/* Monster Search & Selection */}
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+                  <div className="text-sm font-semibold text-gray-300 mb-2">Monster-Ziel</div>
+                  <input
+                    placeholder="Monster suchen…"
+                    value={monsterSearch}
+                    onChange={e => setMonsterSearch(e.target.value)}
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 mb-2"
+                  />
+
+                  {selectedMonster && (
+                    <div className="bg-gray-900 rounded-lg p-2.5 mb-2 border border-blue-700/40">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          {(selectedMonster as Monster & { icon?: string }).icon && (
+                            <img
+                              src={(selectedMonster as Monster & { icon?: string }).icon}
+                              alt={selectedMonster.name}
+                              className="w-8 h-8 object-contain rounded"
+                              onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          )}
+                          <span className="text-sm font-semibold text-blue-300">{selectedMonster.name}</span>
+                        </div>
+                        <button onClick={() => setSelectedMonster(null)}
+                          className="text-gray-600 hover:text-gray-400 text-xs">×</button>
+                      </div>
+                      <div className="text-xs text-gray-500 mb-2">
+                        Lv. {selectedMonster.level} · {selectedMonster.rank}
+                        {selectedMonster.element !== 'None' && ` · ${selectedMonster.element}`}
+                      </div>
+                      <div className="grid grid-cols-4 gap-x-2 gap-y-0.5 text-xs">
+                        <div className="text-gray-500">HP</div>
+                        <div className="text-green-400 font-mono">{fmtK(selectedMonster.hp)}</div>
+                        <div className="text-gray-500">DEF</div>
+                        <div className="text-blue-300 font-mono">{fmt(selectedMonster.def)}</div>
+                        <div className="text-gray-500">ATK</div>
+                        <div className="text-red-300 font-mono col-span-3">
+                          {fmt(selectedMonster.atkMin)}–{fmt(selectedMonster.atkMax)}
+                        </div>
+                        <div className="text-gray-500">EXP</div>
+                        <div className="text-purple-300 font-mono">{fmtK(selectedMonster.exp)}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-1 max-h-52 overflow-y-auto">
+                    {filteredMonsters.map(m => (
+                      <button
+                        key={m.id}
+                        onClick={() => setSelectedMonster(m)}
+                        className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition-colors flex items-center gap-2 ${
+                          selectedMonster?.id === m.id
+                            ? 'bg-blue-700/30 border border-blue-600/50 text-blue-200'
+                            : 'bg-gray-750 hover:bg-gray-700 border border-transparent text-gray-300'
+                        }`}
+                      >
+                        {(m as Monster & { icon?: string }).icon && (
+                          <img
+                            src={(m as Monster & { icon?: string }).icon}
+                            alt=""
+                            className="w-5 h-5 object-contain shrink-0 rounded"
+                            onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        )}
+                        <span className="truncate flex-1">{m.name}</span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-gray-500">Lv.{m.level}</span>
+                          {m.rank !== 'Normal' && m.rank !== 'Low' && (
+                            <span className={`text-[9px] px-1 rounded ${
+                              m.rank === 'Boss'    ? 'bg-yellow-900/60 text-yellow-400' :
+                              m.rank === 'Captain' ? 'bg-blue-900/60 text-blue-400' :
+                                                     'bg-purple-900/60 text-purple-400'
+                            }`}>{m.rank}</span>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                    {filteredMonsters.length === 0 && (
+                      <div className="text-center text-gray-600 text-xs py-4">Kein Monster gefunden</div>
+                    )}
+                    {!monsterSearch && monsters.length > 80 && (
+                      <div className="text-center text-gray-600 text-[10px] py-1">
+                        Suche um alle {monsters.length} Monster anzuzeigen
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <CombatStatsPanel
+                  monster={selectedMonster}
+                  computed={computed}
+                  charLevel={simState.level}
+                  charDef={def}
+                  charAtkMin={charAtkMin}
+                  charAtkMax={charAtkMax}
+                  weaponType={weaponType}
+                  expTable={expTable}
+                  party={party}
+                  onPartyChange={setParty}
+                  isMasterJob={isMasterJob}
+                />
+              </div>
+            )}
+
+            {/* ── EXP/h TABELLE TAB ── */}
+            {rightTab === 'exptable' && (
+              <ExpComparisonTable
+                charAtkMin={charAtkMin}
+                charAtkMax={charAtkMax}
+                charLevel={simState.level}
+                critRate={critRate}
+                critDmg={critDmg}
+                weaponType={weaponType}
+                dex={computed.dex}
+                expTable={expTable}
+                monsters={monsters}
+                isMasterJob={isMasterJob}
+                expBonus={computed.expBonus}
+              />
+            )}
+
           </div>
-
-          {/* Combat Stats Panel */}
-          <CombatStatsPanel
-            monster={selectedMonster}
-            computed={computed}
-            charLevel={simState.level}
-            charDef={def}
-            charAtkMin={charAtkMin}
-            charAtkMax={charAtkMax}
-            weaponType={weaponType}
-            expTable={expTable}
-            party={party}
-            onPartyChange={setParty}
-            isMasterJob={isMasterJob}
-          />
         </div>
-
       </div>
 
-      {/* Item Config Panel (slide-in) */}
+      {/* Item Config Panel (slide-in overlay) */}
       {activeSlot !== null && (
         <ItemConfigPanel
           slot={activeSlot}

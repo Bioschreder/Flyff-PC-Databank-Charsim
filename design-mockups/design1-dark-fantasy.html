@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design 1 – Dark Fantasy</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+  body { background: #070b14; font-family: 'Inter', sans-serif; }
+  .fantasy-font { font-family: 'Cinzel', serif; }
+  .glow-gold { box-shadow: 0 0 12px rgba(251,191,36,0.25); }
+  .glow-blue { box-shadow: 0 0 12px rgba(96,165,250,0.2); }
+  .card-rare   { border-color: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+  .card-unique { border-color: #eab308; box-shadow: 0 0 8px rgba(234,179,8,0.2); }
+  .card-baruna { border-color: #a855f7; box-shadow: 0 0 8px rgba(168,85,247,0.2); }
+  .tab-active::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:#fbbf24; border-radius:1px; }
+  .header-bg { background: linear-gradient(135deg, #0d1221 0%, #111827 50%, #0d1221 100%); border-bottom: 1px solid #1e3a5f; }
+</style>
+</head>
+<body class="text-gray-100 min-h-screen">
+
+<!-- HEADER -->
+<header class="header-bg px-6 py-0 flex items-center justify-between h-14">
+  <div class="flex items-center gap-3">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M14.5 17.5l2 2.5 2-2.5-2-2.5zM3 3l4 4"/><path d="M16 8l4-4"/></svg>
+    <span class="fantasy-font text-lg font-bold text-amber-400 tracking-widest">FLYFF DB</span>
+    <span class="text-[10px] text-amber-700 border border-amber-800 px-1.5 py-0.5 rounded tracking-wider">PC</span>
+  </div>
+
+  <nav class="flex items-center gap-1">
+    <button class="relative px-5 py-4 text-sm text-amber-400 font-medium tab-active tracking-wide">
+      <span>Item Manager</span>
+    </button>
+    <button class="px-5 py-4 text-sm text-gray-500 hover:text-gray-300 tracking-wide">Vergleich</button>
+    <button class="px-5 py-4 text-sm text-gray-500 hover:text-gray-300 tracking-wide">Char-Simulator</button>
+    <button class="px-5 py-4 text-sm text-gray-500 hover:text-gray-300 tracking-wide">Monster-DB</button>
+  </nav>
+
+  <div class="flex items-center gap-2 text-sm text-gray-400">
+    <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold">I</div>
+    <span>i3aphomet</span>
+  </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<div class="flex h-[calc(100vh-56px)]">
+
+  <!-- SIDEBAR -->
+  <aside class="w-56 flex-shrink-0 bg-gray-900/60 border-r border-gray-800/60 flex flex-col p-3 gap-2 overflow-y-auto">
+    <div class="text-[10px] text-amber-700 uppercase tracking-widest px-2 mb-1">Kategorien</div>
+
+    <button class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-900/20 border border-amber-700/40 text-amber-400 text-sm font-medium">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/></svg>
+      Waffen & Equipment
+    </button>
+    <div class="pl-4 space-y-0.5">
+      <button class="w-full text-left px-2 py-1.5 text-xs text-amber-300/80 bg-amber-900/30 rounded-md">Waffen</button>
+      <button class="w-full text-left px-2 py-1.5 text-xs text-gray-500 hover:text-gray-300 rounded-md">Rüstungen</button>
+      <button class="w-full text-left px-2 py-1.5 text-xs text-gray-500 hover:text-gray-300 rounded-md">Schmuck</button>
+    </div>
+
+    <button class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 text-sm">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+      Kostüme
+    </button>
+    <button class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 text-sm">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Powerups
+    </button>
+
+    <div class="mt-3 border-t border-gray-800 pt-3">
+      <div class="text-[10px] text-amber-700 uppercase tracking-widest px-2 mb-2">Filter</div>
+      <div class="space-y-2 px-1">
+        <select class="w-full bg-gray-900 border border-gray-700 rounded-md px-2 py-1.5 text-xs text-gray-300 focus:border-amber-600 focus:outline-none">
+          <option>Alle Grades</option>
+          <option>Rare</option>
+          <option>Unique</option>
+          <option>Ultimate</option>
+          <option>Baruna</option>
+        </select>
+        <select class="w-full bg-gray-900 border border-gray-700 rounded-md px-2 py-1.5 text-xs text-gray-300 focus:outline-none">
+          <option>Alle Klassen</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="flex-1 flex flex-col p-4 gap-3 overflow-hidden">
+    <!-- Search -->
+    <div class="relative">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="absolute left-3.5 top-1/2 -translate-y-1/2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Item nach Name oder ID suchen…"
+        class="w-full bg-gray-900/80 border border-gray-700 focus:border-amber-600/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none transition-colors" value="Baruna">
+    </div>
+
+    <!-- Item Grid -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="grid grid-cols-4 gap-2.5 pb-4">
+
+        <!-- BARUNA ITEM -->
+        <div class="card-baruna relative flex flex-col bg-gray-900/70 border rounded-xl p-3 gap-2 cursor-pointer hover:bg-gray-800/80 transition-all group">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-purple-800/40 flex items-center justify-center text-purple-300 text-xs font-mono">⚔</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-purple-300 truncate">Baruna Edge</div>
+              <div class="text-xs text-gray-500">Waffe › Schwert</div>
+            </div>
+            <div class="text-xs text-gray-600">Lv.170</div>
+          </div>
+          <div class="flex gap-1 flex-wrap">
+            <span class="px-1.5 py-0.5 rounded-md bg-purple-950/60 text-purple-300 text-[10px] font-medium border border-purple-800/40">Baruna</span>
+            <span class="px-1.5 py-0.5 rounded-md bg-gray-800 text-gray-400 text-[10px]">Templar</span>
+          </div>
+          <div class="text-xs text-gray-500">ATK: 2240–2640</div>
+          <button class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-amber-700 hover:bg-amber-600 text-white text-xs px-2 py-0.5 rounded-md transition-all">+</button>
+        </div>
+
+        <!-- UNIQUE ITEM -->
+        <div class="card-unique relative flex flex-col bg-gray-900/70 border rounded-xl p-3 gap-2 cursor-pointer hover:bg-gray-800/80 transition-all group">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-yellow-800/40 flex items-center justify-center text-yellow-300 text-xs">🛡</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-yellow-400 truncate">LSayer Shield</div>
+              <div class="text-xs text-gray-500">Schild › Schild</div>
+            </div>
+            <div class="text-xs text-gray-600">Lv.150</div>
+          </div>
+          <div class="flex gap-1 flex-wrap">
+            <span class="px-1.5 py-0.5 rounded-md bg-yellow-950/60 text-yellow-400 text-[10px] font-medium border border-yellow-800/40">Unique</span>
+            <span class="px-1.5 py-0.5 rounded-md bg-yellow-950/30 text-yellow-600 text-[10px]">Set</span>
+          </div>
+          <div class="text-xs text-gray-500">DEF: 480–520</div>
+        </div>
+
+        <!-- RARE ITEM -->
+        <div class="card-rare relative flex flex-col bg-gray-900/70 border rounded-xl p-3 gap-2 cursor-pointer hover:bg-gray-800/80 transition-all group">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-blue-800/40 flex items-center justify-center text-blue-300 text-xs">🧤</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-blue-300 truncate">Rare Knight Gloves</div>
+              <div class="text-xs text-gray-500">Rüstung › Hand</div>
+            </div>
+            <div class="text-xs text-gray-600">Lv.120</div>
+          </div>
+          <div class="flex gap-1 flex-wrap">
+            <span class="px-1.5 py-0.5 rounded-md bg-blue-950/60 text-blue-300 text-[10px] font-medium border border-blue-800/40">Rare</span>
+            <span class="px-1.5 py-0.5 rounded-md bg-gray-800 text-gray-400 text-[10px]">Knight</span>
+          </div>
+          <div class="text-xs text-gray-500">DEF: 155–175 · +4 Stats</div>
+        </div>
+
+        <!-- NORMAL ITEM -->
+        <div class="relative flex flex-col bg-gray-900/70 border border-gray-700/50 rounded-xl p-3 gap-2 cursor-pointer hover:bg-gray-800/80 hover:border-gray-600 transition-all group">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 text-xs">👢</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-gray-300 truncate">Steel Boots</div>
+              <div class="text-xs text-gray-500">Rüstung › Stiefel</div>
+            </div>
+            <div class="text-xs text-gray-600">Lv.60</div>
+          </div>
+          <div class="flex gap-1 flex-wrap">
+            <span class="px-1.5 py-0.5 rounded-md bg-gray-800 text-gray-500 text-[10px]">Normal</span>
+          </div>
+          <div class="text-xs text-gray-500">DEF: 62–78</div>
+        </div>
+
+        <!-- More cards faded -->
+        <div class="relative flex flex-col bg-gray-900/40 border border-gray-800/40 rounded-xl p-3 gap-2 opacity-50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-gray-800"></div>
+            <div class="flex-1"><div class="h-3 bg-gray-800 rounded w-3/4 mb-1.5"></div><div class="h-2 bg-gray-800 rounded w-1/2"></div></div>
+          </div>
+        </div>
+        <div class="relative flex flex-col bg-gray-900/40 border border-gray-800/40 rounded-xl p-3 gap-2 opacity-30">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 bg-gray-950 rounded-lg border border-gray-800"></div>
+            <div class="flex-1"><div class="h-3 bg-gray-800 rounded w-2/3 mb-1.5"></div><div class="h-2 bg-gray-800 rounded w-2/5"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- DETAIL PANEL -->
+  <aside class="w-72 flex-shrink-0 bg-gray-900/60 border-l border-gray-800/60 p-4 overflow-y-auto">
+    <div class="text-[10px] text-amber-700 uppercase tracking-widest mb-3">Item Detail</div>
+
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-14 h-14 bg-gray-950 rounded-xl border border-purple-800/40 flex items-center justify-center text-2xl">⚔️</div>
+      <div>
+        <div class="text-purple-300 font-bold">Baruna Edge</div>
+        <div class="text-xs text-gray-500 mt-0.5">Schwert · Lv.170</div>
+        <div class="mt-1 text-[10px] px-2 py-0.5 rounded-md bg-purple-950/60 text-purple-300 border border-purple-800/40 inline-block">Baruna</div>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="bg-gray-950/60 rounded-lg p-3 border border-gray-800/40">
+        <div class="text-[10px] text-amber-700 uppercase tracking-wider mb-2">Kampfwerte</div>
+        <div class="space-y-1.5 text-xs">
+          <div class="flex justify-between"><span class="text-gray-500">ATK</span><span class="text-orange-300 font-mono">2240–2640</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">ATK Speed</span><span class="text-gray-300 font-mono">0.9</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">2-Händig</span><span class="text-amber-400">Ja</span></div>
+        </div>
+      </div>
+
+      <div class="bg-gray-950/60 rounded-lg p-3 border border-gray-800/40">
+        <div class="text-[10px] text-amber-700 uppercase tracking-wider mb-2">Bonus-Stats</div>
+        <div class="space-y-1.5 text-xs">
+          <div class="flex justify-between"><span class="text-gray-400">STR</span><span class="text-green-400">+15%</span></div>
+          <div class="flex justify-between"><span class="text-gray-400">Crit DMG</span><span class="text-green-400">+25%</span></div>
+          <div class="flex justify-between"><span class="text-gray-400">ATK Power</span><span class="text-green-400">+18%</span></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Version badge -->
+<div class="fixed bottom-3 right-3 bg-gray-950/90 border border-amber-900/40 rounded-lg px-3 py-1.5 text-right">
+  <div class="text-[10px] text-amber-700 font-semibold fantasy-font">Alpha 0.1</div>
+  <div class="text-[9px] text-gray-700">DB: 14.06.2025</div>
+</div>
+
+</body>
+</html>
