@@ -380,16 +380,16 @@ export function ItemConfigPanel({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-end bg-black/60" onClick={onClose}>
       <div
-        className="relative w-96 h-full bg-gray-900 border-l border-gray-700 overflow-y-auto shadow-2xl flex flex-col"
+        className="relative w-96 h-full bg-gray-900 border-l border-gray-700 shadow-2xl flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700 sticky top-0 bg-gray-900 z-10">
+        <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-900 flex-shrink-0">
           <h2 className="text-sm font-bold text-white">{SLOT_LABELS[slot]} konfigurieren</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white text-lg leading-none">×</button>
         </div>
 
-        <div className="p-4 flex flex-col gap-5">
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-5">
           {/* Item search */}
           <div>
             <div className="text-xs text-gray-400 mb-2 uppercase tracking-wide">Item auswählen</div>
@@ -1108,8 +1108,8 @@ export function ItemConfigPanel({
           )}
         </div>
 
-        {/* Footer */}
-        <div className="sticky bottom-0 bg-gray-900 border-t border-gray-700 p-4 flex gap-2">
+        {/* Footer – always visible at bottom */}
+        <div className="bg-gray-900 border-t border-gray-700 p-4 flex gap-2 flex-shrink-0">
           <button
             onClick={handleSave}
             className="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded py-2 transition-colors"
