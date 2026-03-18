@@ -1,0 +1,1 @@
+# Flyff-PC-Databank-Charsim
