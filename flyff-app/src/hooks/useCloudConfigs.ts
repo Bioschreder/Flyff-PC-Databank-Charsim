@@ -53,7 +53,7 @@ export function useCloudConfigs(user: User | null): UseCloudConfigs {
     setError(null);
     const { data, error: err } = await supabase
       .from('sim_configs')
-      .insert({ name, state })   // user_id wird durch RLS gesetzt
+      .insert({ name, state, user_id: user.id })
       .select()
       .single();
     if (err) {
