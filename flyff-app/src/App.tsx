@@ -136,7 +136,7 @@ export default function App() {
       </Routes>
       <div className="fixed bottom-3 right-3 z-40 text-right leading-tight pointer-events-none">
         <div className="bg-gray-900/80 border border-gray-700/60 rounded-lg px-3 py-1.5 backdrop-blur-sm">
-          <div className="text-[11px] font-semibold text-gray-400">Alpha 0.1</div>
+          <div className="text-[11px] font-semibold text-gray-400">Alpha {__APP_VERSION__}</div>
           <div className="text-[10px] text-gray-600">DB: 14.06.2025</div>
         </div>
       </div>
