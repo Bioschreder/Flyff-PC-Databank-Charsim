@@ -39,7 +39,20 @@ function MonsterCard({ monster, onClick }: { monster: Monster; onClick: () => vo
       onClick={onClick}
       className="bg-gray-800 border border-gray-700 rounded-lg p-3 hover:border-blue-600/60 cursor-pointer transition-all hover:bg-gray-750"
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
+      <div className="flex items-start gap-2 mb-2">
+        {/* Monster icon */}
+        <div className="w-10 h-10 shrink-0 bg-gray-900 rounded border border-gray-700 flex items-center justify-center overflow-hidden">
+          {(monster as Monster & { icon?: string }).icon ? (
+            <img
+              src={(monster as Monster & { icon?: string }).icon}
+              alt={monster.name}
+              className="w-full h-full object-contain"
+              onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+          ) : (
+            <span className="text-gray-600 text-lg">?</span>
+          )}
+        </div>
         <div className="flex-1 min-w-0">
           <div className={`font-semibold text-sm truncate ${RANK_COLOR[monster.rank] ?? 'text-white'}`}>
             {monster.name}
@@ -52,13 +65,13 @@ function MonsterCard({ monster, onClick }: { monster: Monster; onClick: () => vo
             {monster.race && monster.race !== 'Unknown' && monster.race !== '0' && (
               <span className="text-[10px] text-gray-600">{monster.race}</span>
             )}
+            {monster.element !== 'None' && (
+              <span className={`text-[10px] font-semibold ${ELEM_COLOR[monster.element] ?? 'text-gray-400'}`}>
+                {monster.element}
+              </span>
+            )}
           </div>
         </div>
-        {monster.element !== 'None' && (
-          <span className={`text-xs font-semibold shrink-0 ${ELEM_COLOR[monster.element] ?? 'text-gray-400'}`}>
-            ⚡ {monster.element}
-          </span>
-        )}
       </div>
 
       <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs">
@@ -107,13 +120,23 @@ function MonsterDetail({ monster, onClose }: { monster: Monster; onClose: () => 
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-start justify-between mb-4">
-          <div>
-            <div className={`text-lg font-bold ${RANK_COLOR[monster.rank] ?? 'text-white'}`}>
-              {monster.name}
-            </div>
-            <div className="flex gap-2 mt-1">
-              <span className="text-sm text-gray-400">Lv. {monster.level}</span>
-              <span className={`text-xs px-2 py-0.5 rounded ${RANK_BADGE[monster.rank] ?? ''}`}>{monster.rank}</span>
+          <div className="flex items-start gap-3">
+            {(monster as Monster & { icon?: string }).icon && (
+              <img
+                src={(monster as Monster & { icon?: string }).icon}
+                alt={monster.name}
+                className="w-16 h-16 object-contain bg-gray-800 rounded-lg border border-gray-700 p-1"
+                onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            )}
+            <div>
+              <div className={`text-lg font-bold ${RANK_COLOR[monster.rank] ?? 'text-white'}`}>
+                {monster.name}
+              </div>
+              <div className="flex gap-2 mt-1">
+                <span className="text-sm text-gray-400">Lv. {monster.level}</span>
+                <span className={`text-xs px-2 py-0.5 rounded ${RANK_BADGE[monster.rank] ?? ''}`}>{monster.rank}</span>
+              </div>
             </div>
           </div>
           <button onClick={onClose} className="text-gray-500 hover:text-white text-xl leading-none">×</button>
