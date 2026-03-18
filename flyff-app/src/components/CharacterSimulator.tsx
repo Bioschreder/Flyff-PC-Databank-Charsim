@@ -813,14 +813,8 @@ export function CharacterSimulator({
       {/* ── 2-Panel Layout ── */}
       <div className="flex-1 flex gap-3 min-h-0">
 
-        {/* ════ LEFT: Job + Base Stats (slim) ════ */}
-        <div className="w-[220px] shrink-0 flex flex-col gap-3 overflow-y-auto pb-2">
-
-          {/* Job */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Klasse</div>
-            <JobSelector jobs={jobs} selected={simState.jobId} onSelect={handleJobSelect} />
-          </div>
+        {/* ════ LEFT: Base Stats only (slim) ════ */}
+        <div className="w-[190px] shrink-0 flex flex-col gap-3 overflow-y-auto pb-2">
 
           {/* Base Stats */}
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-3 space-y-2.5">
@@ -885,16 +879,19 @@ export function CharacterSimulator({
             {/* ── AUSRÜSTUNG TAB ── */}
             {rightTab === 'equip' && (
               <div className="flex flex-col gap-3">
-                <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-                  <EquipmentPanel
-                    equipment={simState.equipment}
-                    itemMap={itemMap}
-                    activeSetBonuses={computed.activeSetBonuses}
-                    setEffectsDB={setEffects ?? {}}
-                    jobId={simState.jobId}
-                    onSlotClick={setActiveSlot}
-                    onReset={handleReset}
-                  />
+                {/* Equipment centered */}
+                <div className="flex justify-center">
+                  <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 w-fit">
+                    <EquipmentPanel
+                      equipment={simState.equipment}
+                      itemMap={itemMap}
+                      activeSetBonuses={computed.activeSetBonuses}
+                      setEffectsDB={setEffects ?? {}}
+                      jobId={simState.jobId}
+                      onSlotClick={setActiveSlot}
+                      onReset={handleReset}
+                    />
+                  </div>
                 </div>
 
                 {/* Powerups */}
@@ -943,6 +940,12 @@ export function CharacterSimulator({
             {/* ── STATS TAB ── */}
             {rightTab === 'stats' && (
               <div className="flex flex-col gap-3">
+                {/* Job Selector */}
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
+                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Klasse</div>
+                  <JobSelector jobs={jobs} selected={simState.jobId} onSelect={handleJobSelect} />
+                </div>
+
                 <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
                   <div className="text-sm font-semibold text-gray-300 mb-3">
                     {job?.name ?? '–'} · Lv. {simState.level}
