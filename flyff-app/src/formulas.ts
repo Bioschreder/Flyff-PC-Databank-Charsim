@@ -321,16 +321,47 @@ export interface ExpModifiers {
   votersBuff: boolean;          // Voter's Buff                  +50%
   // Rested (Bubble-Point) EXP applies only to base, tracked separately
   bubblePointPct: number;       // e.g. 100 → +100% applied to base before mods
+  isMasterHero?: boolean;       // true → use Lv60M-130H penalty column
 }
 
-export function calcExpLevelModifier(charLevel: number, monsterLevel: number): number {
-  const diff = charLevel - monsterLevel;
-  if (diff > 10) {
-    return Math.max(0.05, 1 - (diff - 10) * 0.05);
-  } else if (diff < 0) {
+// EXP Level Penalty – based on official Flyff table:
+//
+//  Monster unter Char-Lv │ Lv1-120 / Lv130-170 │ Lv60M-130H
+//  ─────────────────────────────────────────────────────────
+//  0                     │  0% Verlust (×1.00)  │ 50% (×0.50)
+//  1–5                   │ 30% Verlust (×0.70)  │ 65% (×0.35)
+//  6–10                  │ 50% Verlust (×0.50)  │ 75% (×0.25)
+//  11–14                 │ 70% Verlust (×0.30)  │ 85% (×0.15)
+//  ≥15                   │ 90% Verlust (×0.10)  │ 95% (×0.05)
+//
+// Monster higher than char: +5% per level above, capped at ×1.50
+export function calcExpLevelModifier(
+  charLevel: number,
+  monsterLevel: number,
+  isMasterHero = false,
+): number {
+  const diff = charLevel - monsterLevel; // positive → monster is lower
+
+  // Monster is higher level → small bonus, cap 150%
+  if (diff < 0) {
     return Math.min(1.5, 1 + Math.abs(diff) * 0.05);
   }
-  return 1.0;
+
+  if (isMasterHero) {
+    // Lv60M–130H column
+    if (diff === 0)          return 0.50;
+    if (diff <= 5)           return 0.35;
+    if (diff <= 10)          return 0.25;
+    if (diff <= 14)          return 0.15;
+    return 0.05;
+  } else {
+    // Lv1-120 / Lv130-170 column
+    if (diff === 0)          return 1.00;
+    if (diff <= 5)           return 0.70;
+    if (diff <= 10)          return 0.50;
+    if (diff <= 14)          return 0.30;
+    return 0.10;
+  }
 }
 
 export function calcAmpliMultiplier(tierId: string, stacks: number): number {
@@ -347,7 +378,7 @@ export function calcFlyffExp(
   mods: ExpModifiers,
 ): { expPerKill: number; breakdown: Record<string, number>; totalMult: number } {
   // Per-level EXP limit (applied first, before all other mods)
-  const levelMod   = calcExpLevelModifier(charLevel, monsterLevel);
+  const levelMod   = calcExpLevelModifier(charLevel, monsterLevel, mods.isMasterHero ?? false);
   const limitedBase = Math.round(baseExp * levelMod);
 
   // Bubble-Point Rested EXP: applies only to limitedBase

@@ -74,6 +74,7 @@ export function ExpComparisonTable({
       cheerActive, lordCheerActive: lordCheer,
       masterMalus, advancedPartyContrib: false,
       votersBuff, bubblePointPct: 0,
+      isMasterHero: isMasterJob,
     };
 
     return monsters
@@ -89,7 +90,7 @@ export function ExpComparisonTable({
         const expected = avg * (1 - cr) + crit * cr;
         const dps = expected / (attackIntervalMs / 1000);
         const killTimeS = dps > 0 ? m.hp / dps : Infinity;
-        const levelPenalty = calcExpLevelModifier(charLevel, m.level);
+        const levelPenalty = calcExpLevelModifier(charLevel, m.level, isMasterJob);
         const expResult = calcFlyffExp(m.exp, charLevel, m.level, expMods);
         const expPerHour = isFinite(killTimeS) && killTimeS > 0
           ? expResult.expPerKill * 3600 / killTimeS : 0;
