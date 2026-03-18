@@ -1,0 +1,294 @@
+{
+  "JOB_MERCENARY": {
+    "id": 1,
+    "label": "Mercenary",
+    "stats": [
+      {
+        "stat": "DST_STR",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATKPOWER_RATE",
+        "valuePerTier": 5,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ADJDEF_RATE",
+        "valuePerTier": 5,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_ACROBAT": {
+    "id": 2,
+    "label": "Akrobat",
+    "stats": [
+      {
+        "stat": "DST_DEX",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_CRITICAL_BONUS",
+        "valuePerTier": 5,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_CHR_CHANCECRITICAL",
+        "valuePerTier": 5,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_ASSIST": {
+    "id": 3,
+    "label": "Assist",
+    "stats": [
+      {
+        "stat": "DST_STA",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_HP_MAX_RATE",
+        "valuePerTier": 5,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_MP_MAX_RATE",
+        "valuePerTier": 5,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_MAGICIAN": {
+    "id": 4,
+    "label": "Magier",
+    "stats": [
+      {
+        "stat": "DST_INT",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_SPELL_RATE",
+        "valuePerTier": 5,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_PARRY",
+        "valuePerTier": 5,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_KNIGHT": {
+    "id": 5,
+    "label": "Knight",
+    "stats": [
+      {
+        "stat": "DST_STA",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_REFLECT_DAMAGE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ADJDEF_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_HP_MAX_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_BLADE": {
+    "id": 6,
+    "label": "Blade",
+    "stats": [
+      {
+        "stat": "DST_STR",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATKPOWER_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATTACKSPEED",
+        "valuePerTier": 200,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_HP_MAX_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_JESTER": {
+    "id": 7,
+    "label": "Jester",
+    "stats": [
+      {
+        "stat": "DST_STR",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATTACKSPEED",
+        "valuePerTier": 200,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_CHR_CHANCECRITICAL",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_CRITICAL_BONUS",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_RANGER": {
+    "id": 8,
+    "label": "Ranger",
+    "stats": [
+      {
+        "stat": "DST_DEX",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ADJ_HITRATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_MONSTER_DMG",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_PARRY",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_RINGMASTER": {
+    "id": 9,
+    "label": "Ringmaster",
+    "stats": [
+      {
+        "stat": "DST_INT",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_SPEED",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_BLOCK_MELEE",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_BLOCK_RANGE",
+        "valuePerTier": 20,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_BILLPOSTER": {
+    "id": 10,
+    "label": "Billposter",
+    "stats": [
+      {
+        "stat": "DST_STR",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_MP_MAX_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_HP_MAX_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_MONSTER_DMG",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_PSYCHIKEEPER": {
+    "id": 11,
+    "label": "Psykeeper",
+    "stats": [
+      {
+        "stat": "DST_INT",
+        "valuePerTier": 35,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_STA",
+        "valuePerTier": 35,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_MP_MAX_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATKPOWER_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  },
+  "JOB_ELEMENTOR": {
+    "id": 12,
+    "label": "Elementor",
+    "stats": [
+      {
+        "stat": "DST_INT",
+        "valuePerTier": 20,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_ATKPOWER_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_SPELL_RATE",
+        "valuePerTier": 10,
+        "tiers": 4
+      },
+      {
+        "stat": "DST_PARRY",
+        "valuePerTier": 10,
+        "tiers": 4
+      }
+    ]
+  }
+}

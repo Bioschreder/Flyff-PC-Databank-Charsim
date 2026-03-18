@@ -1,0 +1,596 @@
+{
+  "ultimate": {
+    "DST_HP_MAX": [
+      1479
+    ],
+    "DST_ATKPOWER": [
+      100
+    ],
+    "DST_ADJDEF": [
+      65
+    ],
+    "DST_MELEE_STEALHP": [
+      3
+    ],
+    "DST_PVP_DMG": [
+      7
+    ],
+    "DST_STR": [
+      20
+    ],
+    "DST_STA": [
+      20
+    ],
+    "DST_DEX": [
+      20
+    ],
+    "DST_INT": [
+      20
+    ],
+    "DST_HP_MAX_RATE": [
+      6
+    ],
+    "DST_MP_MAX_RATE": [
+      6
+    ],
+    "DST_ADDMAGIC": [
+      100
+    ],
+    "DST_EXPERIENCE": [
+      6
+    ],
+    "DST_SPELL_RATE": [
+      6
+    ],
+    "DST_MONSTER_DMG": [
+      3
+    ],
+    "DST_DROP_ITEM_ALLGRADE_RATE": [
+      6
+    ],
+    "DST_CHR_CHANCECRITICAL": [
+      6
+    ],
+    "DST_CRITICAL_BONUS": [
+      3
+    ]
+  },
+  "suit": {
+    "JOB_MERCENARY": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_ACROBAT": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_ASSIST": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_MAGICIAN": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_KNIGHT": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_BLADE": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_JESTER": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_RANGER": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_RINGMASTER": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_BILLPOSTER": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_PSYCHIKEEPER": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    },
+    "JOB_ELEMENTOR": {
+      "DST_HP_MAX_RATE": [
+        4
+      ],
+      "DST_ATKPOWER": [
+        81
+      ],
+      "DST_ADJDEF": [
+        81
+      ],
+      "DST_STR": [
+        7
+      ],
+      "DST_DEX": [
+        7
+      ],
+      "DST_INT": [
+        7
+      ],
+      "DST_STA": [
+        7
+      ],
+      "DST_MONSTER_DMG": [
+        1
+      ],
+      "DST_PVP_DMG": [
+        1
+      ],
+      "DST_EXPERIENCE": [
+        1
+      ],
+      "DST_DROP_ITEM_ALLGRADE_RATE": [
+        1
+      ]
+    }
+  },
+  "costume": {
+    "DST_STR": [
+      3,
+      6,
+      10,
+      15
+    ],
+    "DST_STA": [
+      3,
+      6,
+      10,
+      15
+    ],
+    "DST_DEX": [
+      3,
+      6,
+      10,
+      15
+    ],
+    "DST_INT": [
+      3,
+      6,
+      10,
+      15
+    ],
+    "DST_MELEE_STEALHP": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "DST_ATKPOWER_RATE": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_PVP_DMG": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_ATTACKSPEED_RATE": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_SPELL_RATE": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_BLOCK_RANGE": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_BLOCK_MELEE": [
+      2,
+      4,
+      6,
+      10
+    ],
+    "DST_MONSTER_DMG": [
+      1,
+      2,
+      3,
+      8
+    ],
+    "DST_HP_MAX_RATE": [
+      1,
+      2,
+      3,
+      8
+    ],
+    "DST_CRITICAL_BONUS": [
+      1,
+      2,
+      3,
+      8
+    ],
+    "DST_DROP_ITEM_ALLGRADE_RATE": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "DST_REFLECT_DAMAGE": [
+      1,
+      2,
+      3,
+      8
+    ],
+    "DST_SPEED": [
+      1,
+      2,
+      3,
+      7
+    ],
+    "DST_EXPERIENCE": [
+      1,
+      2,
+      5,
+      10
+    ],
+    "DST_PARRY": [
+      1,
+      2,
+      5,
+      8
+    ]
+  }
+}

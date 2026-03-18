@@ -1,0 +1,83 @@
+IDS_WORLD_INC_000000	Test
+IDS_WORLD_INC_000001	Madrigal
+IDS_WORLD_INC_000002	Lux
+IDS_WORLD_INC_000003	425
+IDS_WORLD_INC_000004	Lux2
+IDS_WORLD_INC_000005	Event
+IDS_WORLD_INC_000006	Mas Dungeon
+IDS_WORLD_INC_000007	Azria
+IDS_WORLD_INC_000008	Dekanes Mine
+IDS_WORLD_INC_000009	Gildenkrieg Territorium
+IDS_WORLD_INC_000010	Vulkaninsel - Volcane
+IDS_WORLD_INC_000011	Boss Monster(Big Muscle)
+IDS_WORLD_INC_000012	Boss Monster(Krrr)
+IDS_WORLD_INC_000013	Boss Monster(Mushmoot)
+IDS_WORLD_INC_000014	Ivillis Tempel
+IDS_WORLD_INC_000015	Ivillis Tempel(Boss)
+IDS_WORLD_INC_000016	Volcane RED
+IDS_WORLD_INC_000017	Volcane YELLOW
+IDS_WORLD_INC_000018	1vs1 Guild War Zone A
+IDS_WORLD_INC_000019	1vs1 Guild War Zone B
+IDS_WORLD_INC_000020	1vs1 Guild War Zone C
+IDS_WORLD_INC_000021	1vs1 Guild War Zone D
+IDS_WORLD_INC_000022	PvP Arena
+IDS_WORLD_INC_000023	Der geheime Raum 0
+IDS_WORLD_INC_000024	Der geheime Raum 1
+IDS_WORLD_INC_000025	Der geheime Raum 2
+IDS_WORLD_INC_000026	Der geheime Raum 3
+IDS_WORLD_INC_000027	Der geheime Raum 4
+IDS_WORLD_INC_000028	Der geheime Raum 5
+IDS_WORLD_INC_000029	Der geheime Raum 6
+IDS_WORLD_INC_000030	Der geheime Raum 7
+IDS_WORLD_INC_000031	Der geheime Raum 8
+IDS_WORLD_INC_000032	Der geheime Raum 9
+IDS_WORLD_INC_000033	Der geheime Raum 10
+IDS_WORLD_INC_000034	Der geheime Raum 11
+IDS_WORLD_INC_000035	Der geheime Raum 12
+IDS_WORLD_INC_000036	Der geheime Raum 13
+IDS_WORLD_INC_000037	Der geheime Raum 14
+IDS_WORLD_INC_000038	Der geheime Raum 15
+IDS_WORLD_INC_000039	Der geheime Raum 16
+IDS_WORLD_INC_000040	Der verlassene Turm B1
+IDS_WORLD_INC_000041	Der verlassene Turm B2
+IDS_WORLD_INC_000042	Der verlassene Turm B3
+IDS_WORLD_INC_000043	Der verlassene Turm B4
+IDS_WORLD_INC_000044	Der verlassene Turm B5
+IDS_WORLD_INC_000045	Die Koralleninsel
+IDS_WORLD_INC_000046	Auf dem Zimmer
+IDS_WORLD_INC_000047	Eingang zur Aminuskrypta
+IDS_WORLD_INC_000048	Eingang zur Verfluchten Aminuskrypta
+IDS_WORLD_INC_000049	Quizzone
+IDS_WORLD_INC_000050	Gildenhaus (klein)
+IDS_WORLD_INC_000051	Gildenhaus (mittel)
+IDS_WORLD_INC_000052	Gildenhaus (groß)
+IDS_WORLD_INC_000053	Chrystal-Labyrinth
+IDS_WORLD_INC_000054	Tramnuk-Abbild
+IDS_WORLD_INC_000055	Tramnuk 
+IDS_WORLD_INC_000056	Rartesia
+IDS_WORLD_INC_000057	Murano
+IDS_WORLD_INC_000058	Kalgas Höhle
+IDS_WORLD_INC_000059	Das Coliseum
+IDS_WORLD_INC_000060	Euphrasia - Insel der Fantasie
+IDS_WORLD_INC_000061	Die Arena
+IDS_WORLD_INC_000062	Herneos
+IDS_WORLD_INC_000063	Koralleninsel
+IDS_WORLD_INC_000064	Sanpres
+IDS_WORLD_INC_000065	Sancherko
+IDS_WORLD_INC_000066	Euphrasia - Insel der Träume
+IDS_WORLD_INC_000067	Herneos Abgrund
+IDS_WORLD_INC_000068	Madrigal Market
+IDS_WORLD_INC_000069	Dark Rartesia
+IDS_WORLD_INC_000070	Schwebendes Schloss B1
+IDS_WORLD_INC_000071	Contaminated Rhisis Trail
+IDS_WORLD_INC_000072	Emporium
+IDS_WORLD_INC_000073	?????? ??
+IDS_WORLD_INC_000074	Verfluchten Keller
+IDS_WORLD_INC_000075	Mysteriöser Tramnuk
+IDS_WORLD_INC_000076	Niedrig-Leveliges EXP Dungeon
+IDS_WORLD_INC_000077	Mittel-Leveliges EXP Dungeon
+IDS_WORLD_INC_000078	Hohes-Levelige EXP Dungeon
+IDS_WORLD_INC_000079	Time Attack Kampffeld
+IDS_WORLD_INC_000080	Weihnachts Event Dungeon
+IDS_WORLD_INC_000081	Weihnachts Event Dungeon (Fortgeschritten)
+IDS_WORLD_INC_000082	Schatzinsel

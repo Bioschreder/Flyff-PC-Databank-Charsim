@@ -1,0 +1,1179 @@
+{
+  "cards": [
+    {
+      "id": "II_GEN_MAT_ELE_MAGMA",
+      "name": "Volcano Card (4%)",
+      "rank": "C",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_VOLCANO3",
+      "name": "Volcano Card (3%)",
+      "rank": "B",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_10_VOLCANO",
+      "name": "Volcano Card (10%)",
+      "rank": "A",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 10
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_CANDLEA",
+      "name": "Fire Card (A)",
+      "rank": "A",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 7,
+        "DST_CRITICAL_BONUS": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_18_VOLCANO",
+      "name": "High Volcano Card (18%)",
+      "rank": "A",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 18
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_15_VOLCANO",
+      "name": "Volcano Baruna Card 15%",
+      "rank": "S",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 15
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_S_FIRE",
+      "name": "Fire Card (S)",
+      "rank": "S",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 12,
+        "DST_CRITICAL_BONUS": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_12_VOLCANO",
+      "name": "Volcano Card (12%)",
+      "rank": "R",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 12
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_R_FIRE",
+      "name": "Fire Card (R)",
+      "rank": "R",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 15,
+        "DST_CRITICAL_BONUS": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_SR_FIRE",
+      "name": "Fire Baruna Card (SR)",
+      "rank": "SR",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 18,
+        "DST_CRITICAL_BONUS": 8
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_CANDLE",
+      "name": "Volcano Card (2%)",
+      "rank": "N",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_VOLCANO",
+      "name": "Volcano Card (7%)",
+      "rank": "N",
+      "group": "fire",
+      "stats": {
+        "DST_HP_MAX_RATE": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_CANDLED",
+      "name": "Fire Card (D)",
+      "rank": "N",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_CANDLEC",
+      "name": "Fire Card (C)",
+      "rank": "N",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 3,
+        "DST_CRITICAL_BONUS": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_CANDLEB",
+      "name": "Fire Card (B)",
+      "rank": "N",
+      "group": "fire",
+      "stats": {
+        "DST_STR": 4,
+        "DST_CRITICAL_BONUS": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_RAINATKD",
+      "name": "Water Card (D)",
+      "rank": "D",
+      "group": "water",
+      "stats": {
+        "DST_INT": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_FLOOD",
+      "name": "Ocean Card (4%)",
+      "rank": "C",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_RAINATKC",
+      "name": "Water Card (C)",
+      "rank": "C",
+      "group": "water",
+      "stats": {
+        "DST_INT": 3,
+        "DST_SPELL_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_OCEAN3",
+      "name": "Ocean Card (3%)",
+      "rank": "B",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_RAINATKB",
+      "name": "Water Card (B)",
+      "rank": "B",
+      "group": "water",
+      "stats": {
+        "DST_INT": 4,
+        "DST_SPELL_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_10_OCEAN",
+      "name": "Ocean Card (10%)",
+      "rank": "A",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 10
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_RAINATKA",
+      "name": "Water Card (A)",
+      "rank": "A",
+      "group": "water",
+      "stats": {
+        "DST_INT": 7,
+        "DST_SPELL_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_18_OCEAN",
+      "name": "High Ocean Card (18%)",
+      "rank": "A",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 18
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_15_OCEAN",
+      "name": "Ocean Baruna Card 15%",
+      "rank": "S",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 15
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_S_WATER",
+      "name": "Water Card (S)",
+      "rank": "S",
+      "group": "water",
+      "stats": {
+        "DST_INT": 12,
+        "DST_SPELL_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_12_OCEAN",
+      "name": "Ocean Card (12%)",
+      "rank": "R",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 12
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_R_WATER",
+      "name": "Water Card (R)",
+      "rank": "R",
+      "group": "water",
+      "stats": {
+        "DST_INT": 15,
+        "DST_SPELL_RATE": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_SR_WATER",
+      "name": "Water Baruna Card (SR)",
+      "rank": "SR",
+      "group": "water",
+      "stats": {
+        "DST_INT": 18,
+        "DST_SPELL_RATE": 8
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_RAIN",
+      "name": "Ocean Card (2%)",
+      "rank": "N",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_OCEAN",
+      "name": "Ocean Card (7%)",
+      "rank": "N",
+      "group": "water",
+      "stats": {
+        "DST_MP_MAX_RATE": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SPARKATKD",
+      "name": "Electric Card (D)",
+      "rank": "D",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_THUNDER",
+      "name": "Lightning Card (4%)",
+      "rank": "C",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SPARKATKC",
+      "name": "Electric Card (C)",
+      "rank": "C",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 3,
+        "DST_CHR_CHANCECRITICAL": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_LIGHTING3",
+      "name": "Lightning Card (3%)",
+      "rank": "B",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SPARKATKB",
+      "name": "Electric Card (B)",
+      "rank": "B",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 4,
+        "DST_CHR_CHANCECRITICAL": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_10_LIGHTING",
+      "name": "Lightning Card (10%)",
+      "rank": "A",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 10
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SPARKATKA",
+      "name": "Electric Card (A)",
+      "rank": "A",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 7,
+        "DST_CHR_CHANCECRITICAL": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_18_LIGHTING",
+      "name": "High Vacuum Card (18%)",
+      "rank": "A",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 18
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_15_LIGHTING",
+      "name": "Lightning Baruna Card 15%",
+      "rank": "S",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 15
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_S_ELECTRIC",
+      "name": "Electric Card (S)",
+      "rank": "S",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 12,
+        "DST_CHR_CHANCECRITICAL": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_12_LIGHTING",
+      "name": "Lightning Card (12%)",
+      "rank": "R",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 12
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_R_ELECTRIC",
+      "name": "Electric Card (R)",
+      "rank": "R",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 15,
+        "DST_CHR_CHANCECRITICAL": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_SR_ELECTRIC",
+      "name": "Electric Baruna Card (SR)",
+      "rank": "SR",
+      "group": "electric",
+      "stats": {
+        "DST_DEX": 18,
+        "DST_CHR_CHANCECRITICAL": 8
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SPARK",
+      "name": "Lightning Card (2%)",
+      "rank": "N",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_LIGHTING",
+      "name": "Lightning Card (7%)",
+      "rank": "N",
+      "group": "electric",
+      "stats": {
+        "DST_ATKPOWER_RATE": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SANDATKD",
+      "name": "Earth Card (D)",
+      "rank": "D",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_MOUNTAIN",
+      "name": "Earthquake Card (4%)",
+      "rank": "C",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SANDATKC",
+      "name": "Earth Card (C)",
+      "rank": "C",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_EARTHQUAKE3",
+      "name": "Earthquake Card (3%)",
+      "rank": "B",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SANDATKB",
+      "name": "Earth Card (B)",
+      "rank": "B",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_10_EARTHQUAKE",
+      "name": "Earthquake Card (10%)",
+      "rank": "A",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 10
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SANDATKA",
+      "name": "Earth Card (A)",
+      "rank": "A",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_18_EARTHQUAKE",
+      "name": "High Earthquake Card (18%)",
+      "rank": "A",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 18
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_15_EARTHQUAKE",
+      "name": "Earthquake Baruna Card 15%",
+      "rank": "S",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 15
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_S_LAND",
+      "name": "Earth Card (S)",
+      "rank": "S",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 12,
+        "DST_HP_MAX": 500
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_12_EARTHQUAKE",
+      "name": "Earthquake Card (12%)",
+      "rank": "R",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 12
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_R_LAND",
+      "name": "Land Card (R)",
+      "rank": "R",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 15,
+        "DST_HP_MAX_RATE": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_SR_LAND",
+      "name": "Land Baruna Card (SR)",
+      "rank": "SR",
+      "group": "earth",
+      "stats": {
+        "DST_STA": 18,
+        "DST_HP_MAX_RATE": 8
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_SAND",
+      "name": "Earthquake Card (2%)",
+      "rank": "N",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_EARTHQUAKE",
+      "name": "Earthquake Card (7%)",
+      "rank": "N",
+      "group": "earth",
+      "stats": {
+        "DST_ADJDEF_RATE": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_BREEZEATKD",
+      "name": "Wind Card (D)",
+      "rank": "D",
+      "group": "wind",
+      "stats": {
+        "DST_SPEED": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_STORM",
+      "name": "Vacuum Card (4%)",
+      "rank": "C",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_BREEZEATKC",
+      "name": "Wind Card (C)",
+      "rank": "C",
+      "group": "wind",
+      "stats": {
+        "DST_SPEED": 3,
+        "DST_ATTACKSPEED": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_VACCUM3",
+      "name": "Vacuum Card (3%)",
+      "rank": "B",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_BREEZEATKB",
+      "name": "Wind Card (B)",
+      "rank": "B",
+      "group": "wind",
+      "stats": {
+        "DST_SPEED": 4,
+        "DST_ATTACKSPEED": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_10_VACCUM",
+      "name": "Vacuum Card (10%)",
+      "rank": "A",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 10
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_BREEZEATKA",
+      "name": "Wind Card (A)",
+      "rank": "A",
+      "group": "wind",
+      "stats": {
+        "DST_SPEED": 7,
+        "DST_ATTACKSPEED": 40
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_18_VACCUM",
+      "name": "High Vacuum Card (18%)",
+      "rank": "A",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 18
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_15_VACCUM",
+      "name": "Vacuum Baruna Card 15%",
+      "rank": "S",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 15
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_S_WIND",
+      "name": "Wind Card (S)",
+      "rank": "S",
+      "group": "wind",
+      "stats": {
+        "DST_SPEED": 12,
+        "DST_ATTACKSPEED": 80
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_PIERCECARD_12_VACCUM",
+      "name": "Vacuum Card (12%)",
+      "rank": "R",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 12
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_BREEZE",
+      "name": "Vacuum Card (2%)",
+      "rank": "N",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_VACCUM",
+      "name": "Vacuum Card (7%)",
+      "rank": "N",
+      "group": "wind",
+      "stats": {
+        "DST_FP_MAX_RATE": 7
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_STRIKINGPOWER_1",
+      "name": "Vuul Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ATKPOWER_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_DEFENSIVEPOWER_1",
+      "name": "Vulcanus Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ADJDEF_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_MAX_HP_1",
+      "name": "Vulkan Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_HP_MAX_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_MAX_HP_2",
+      "name": "Breeze Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_HP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_MAX_MP_1",
+      "name": "Mountain Wind Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_MAX_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAT_ELE_MAX_MP_2",
+      "name": "Mountain Valley Wind Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MAX_FP_1",
+      "name": "Valley Wind Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_MAX_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MAX_FP_2",
+      "name": "Dust Whirl Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_MAX_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_CRITICAL_1",
+      "name": "Geostrophic Wind Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_CHR_CHANCECRITICAL": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_CRITICAL_2",
+      "name": "Vurkan Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_CHR_CHANCECRITICAL": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_CRITICAL_BONUS_1",
+      "name": "Tine Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_CRITICAL_BONUS": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_CRITICAL_BONUS_2",
+      "name": "Tan Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_CRITICAL_BONUS": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_SPEEL_SPEED_1",
+      "name": "Microseism Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_SPELL_RATE": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_SPEEL_SPEED_2",
+      "name": "Hypocenter Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_SPELL_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ATTACK_SPEED_1",
+      "name": "Epicenter Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ATTACKSPEED": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ATTACK_SPEED_2",
+      "name": "Moment Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ATTACKSPEED": 40
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_BLOCK_MELEE_1",
+      "name": "Rayleigh Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_BLOCK_MELEE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_BLOCK_MELEE_2",
+      "name": "Tsunami Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_BLOCK_MELEE": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MP_DEC_0",
+      "name": "Sweam Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_DEC_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MP_DEC_1",
+      "name": "Falm Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_DEC_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_FP_DEC_0",
+      "name": "Acap Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_DEC_RATE": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_FP_DEC_1",
+      "name": "Bilo Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_DEC_RATE": 4
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ALL_DEC_0",
+      "name": "Adass Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ALL_DEC_RATE": 3
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_HP_RECOVERY_0",
+      "name": "Reaba Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_HP_RECOVERY": 80
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_HP_RECOVERY_1",
+      "name": "Sikeki Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_HP_RECOVERY": 120
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MP_RECOVERY_0",
+      "name": "Gosemi Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_RECOVERY": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_MP_RECOVERY_1",
+      "name": "Tilic Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_MP_RECOVERY": 60
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_FP_RECOVERY_0",
+      "name": "Pelss Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_RECOVERY": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_FP_RECOVERY_1",
+      "name": "Bukuri Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_FP_RECOVERY": 50
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ALL_RECOVERY_0",
+      "name": "Dhan Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ALL_RECOVERY": 20
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ALL_RECOVERY_1",
+      "name": "Ilabud Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_ALL_RECOVERY": 40
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_HP_0",
+      "name": "Grop Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_HP": 100
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_HP_1",
+      "name": "Pererty Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_HP": 140
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_MP_0",
+      "name": "Tper Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_MP": 30
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_MP_1",
+      "name": "Jemss Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_MP": 70
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_FP_0",
+      "name": "Tniss Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_FP": 30
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_FP_1",
+      "name": "Jedin Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_FP": 60
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_ALL_0",
+      "name": "Hitar Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_ALL": 30
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_KILL_ALL_1",
+      "name": "Sunse Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_KILL_ALL": 50
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_SPEED_0",
+      "name": "Sunhung Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_SPEED": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_SPEED_1",
+      "name": "Whabe Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_SPEED": 5
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_STR_0",
+      "name": "Hachon Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STR": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_STR_1",
+      "name": "Buklu Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STR": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_STA_0",
+      "name": "Hosoo Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STA": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_STA_1",
+      "name": "Giha Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STA": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_DEX_0",
+      "name": "Senmul Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_DEX": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_DEX_1",
+      "name": "Bulmul Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_DEX": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_INT_0",
+      "name": "Gunmul Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_INT": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_INT_1",
+      "name": "Munmul Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_INT": 2
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ALL_STATE_0",
+      "name": "Bodi Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STAT_ALLUP": 1
+      }
+    },
+    {
+      "id": "II_GEN_MAP_ELE_ALL_STATE_1",
+      "name": "Gldiro Card",
+      "rank": "N",
+      "group": "utility",
+      "stats": {
+        "DST_STAT_ALLUP": 2
+      }
+    }
+  ],
+  "baruna_runes": [
+    {
+      "id": "RUNE_STR",
+      "name": "Enhanced Ancient Death Rune - STR",
+      "stats": {
+        "DST_STR": 180,
+        "DST_CRITICAL_BONUS": 80
+      }
+    },
+    {
+      "id": "RUNE_DEX",
+      "name": "Enhanced Ancient Death Rune - DEX",
+      "stats": {
+        "DST_DEX": 180,
+        "DST_CHR_CHANCECRITICAL": 80
+      }
+    },
+    {
+      "id": "RUNE_INT",
+      "name": "Enhanced Ancient Death Rune - INT",
+      "stats": {
+        "DST_INT": 180,
+        "DST_SPELL_RATE": 80
+      }
+    },
+    {
+      "id": "RUNE_STA",
+      "name": "Enhanced Ancient Death Rune - STA",
+      "stats": {
+        "DST_STA": 180,
+        "DST_HP_MAX_RATE": 80
+      }
+    }
+  ]
+}

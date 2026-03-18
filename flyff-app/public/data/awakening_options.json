@@ -1,0 +1,165 @@
+{
+  "options": [
+    {
+      "stat": "DST_STR",
+      "label": "STR",
+      "minVal": -25,
+      "maxVal": 25,
+      "unit": ""
+    },
+    {
+      "stat": "DST_DEX",
+      "label": "DEX",
+      "minVal": -25,
+      "maxVal": 25,
+      "unit": ""
+    },
+    {
+      "stat": "DST_INT",
+      "label": "INT",
+      "minVal": -25,
+      "maxVal": 25,
+      "unit": ""
+    },
+    {
+      "stat": "DST_STA",
+      "label": "STA",
+      "minVal": -25,
+      "maxVal": 25,
+      "unit": ""
+    },
+    {
+      "stat": "DST_HP_MAX_RATE",
+      "label": "Max HP",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_MP_MAX_RATE",
+      "label": "Max MP",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_ATKPOWER_RATE",
+      "label": "ATK",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_CRITICAL_BONUS",
+      "label": "Crit DMG",
+      "minVal": 1,
+      "maxVal": 30,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_CHR_CHANCECRITICAL",
+      "label": "Crit Rate",
+      "minVal": 1,
+      "maxVal": 15,
+      "unit": ""
+    },
+    {
+      "stat": "DST_ATTACKSPEED",
+      "label": "Attack Speed",
+      "minVal": 20,
+      "maxVal": 100,
+      "unit": ""
+    },
+    {
+      "stat": "DST_SPEED",
+      "label": "Movement Speed",
+      "minVal": 1,
+      "maxVal": 5,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_EXPERIENCE",
+      "label": "EXP Bonus",
+      "minVal": 1,
+      "maxVal": 5,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_ADDMAGIC",
+      "label": "Magic ATK",
+      "minVal": 30,
+      "maxVal": 180,
+      "unit": ""
+    },
+    {
+      "stat": "DST_MELEE_STEALHP",
+      "label": "Suck HP",
+      "minVal": 1,
+      "maxVal": 6,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_PVP_DMG",
+      "label": "PvP DMG",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_MONSTER_DMG",
+      "label": "Monster DMG",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_BLOCK_MELEE",
+      "label": "Melee Block",
+      "minVal": 1,
+      "maxVal": 15,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_BLOCK_RANGE",
+      "label": "Range Block",
+      "minVal": 1,
+      "maxVal": 15,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_PARRY",
+      "label": "Parry",
+      "minVal": 1,
+      "maxVal": 10,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_DROP_ITEM_ALLGRADE_RATE",
+      "label": "Item Drop",
+      "minVal": 1,
+      "maxVal": 5,
+      "unit": "%"
+    },
+    {
+      "stat": "DST_ADJDEF",
+      "label": "DEF",
+      "minVal": 5,
+      "maxVal": 100,
+      "unit": ""
+    },
+    {
+      "stat": "DST_ATKPOWER",
+      "label": "ATK Power",
+      "minVal": 5,
+      "maxVal": 200,
+      "unit": ""
+    },
+    {
+      "stat": "DST_HP_MAX",
+      "label": "Max HP (flat)",
+      "minVal": 100,
+      "maxVal": 2000,
+      "unit": ""
+    }
+  ]
+}
