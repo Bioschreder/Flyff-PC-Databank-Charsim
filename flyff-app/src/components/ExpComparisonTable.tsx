@@ -32,12 +32,23 @@ interface MonsterRow {
   dps: number;
 }
 
+type SortKey = 'rank' | 'name' | 'level' | 'penalty' | 'killTime' | 'dps' | 'expPerKill' | 'expPerHour';
+type SortDir = 'asc' | 'desc';
+
 function fmtCompact(n: number): string {
   if (!isFinite(n) || n <= 0) return '0';
   if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2) + 'B';
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M';
   if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
   return Math.round(n).toString();
+}
+
+function fmtPct(val: number, total: number): string {
+  if (!total || !isFinite(val) || val <= 0) return '';
+  const p = (val / total) * 100;
+  if (p >= 100) return '≥100%';
+  if (p >= 1) return p.toFixed(1) + '%';
+  return p.toFixed(2) + '%';
 }
 
 function fmtTime(ms: number): string {
@@ -48,6 +59,11 @@ function fmtTime(ms: number): string {
   if (s < 3600) return `${m}m ${r}s`;
   const h = Math.floor(s / 3600); const min = Math.floor((s % 3600) / 60);
   return `${h}h ${min}m`;
+}
+
+function SortIcon({ col, sortKey, dir }: { col: SortKey; sortKey: SortKey; dir: SortDir }) {
+  if (col !== sortKey) return <span className="opacity-20 ml-0.5">↕</span>;
+  return <span className="ml-0.5 text-blue-400">{dir === 'desc' ? '↓' : '↑'}</span>;
 }
 
 export function ExpComparisonTable({
@@ -62,12 +78,14 @@ export function ExpComparisonTable({
   const [masterMalus, setMasterMalus] = useState(isMasterJob);
   const [cheerActive, setCheerActive] = useState(false);
   const [lordCheer, setLordCheer] = useState(false);
-  const [topN] = useState(10);
+  const [topN] = useState(20);
+  const [sortKey, setSortKey] = useState<SortKey>('expPerHour');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
 
   const selectedAmpli = AMPLI_TIERS.find(t => t.id === ampliTierId) ?? AMPLI_TIERS[0];
   const attackIntervalMs = calcAttackIntervalMs(weaponType, dex);
 
-  const rows = useMemo((): MonsterRow[] => {
+  const baseRows = useMemo((): MonsterRow[] => {
     const expMods: ExpModifiers = {
       expEventMult, lordEventPct, ampliTierId, ampliStacks,
       expStatPct: expBonus,
@@ -94,7 +112,6 @@ export function ExpComparisonTable({
         const expResult = calcFlyffExp(m.exp, charLevel, m.level, expMods);
         const expPerHour = isFinite(killTimeS) && killTimeS > 0
           ? expResult.expPerKill * 3600 / killTimeS : 0;
-
         return { monster: m, killTimeS, expPerKill: expResult.expPerKill, expPerHour, levelPenalty, dps };
       })
       .filter(r => r.expPerHour > 0 && isFinite(r.expPerHour))
@@ -103,8 +120,37 @@ export function ExpComparisonTable({
   }, [
     monsters, charAtkMin, charAtkMax, charLevel, critRate, critDmg,
     attackIntervalMs, expEventMult, lordEventPct, ampliTierId, ampliStacks,
-    expBonus, cheerActive, lordCheer, masterMalus, votersBuff, topN,
+    expBonus, cheerActive, lordCheer, masterMalus, votersBuff, topN, isMasterJob,
   ]);
+
+  const rows = useMemo(() => {
+    const sorted = [...baseRows].sort((a, b) => {
+      let va = 0, vb = 0;
+      switch (sortKey) {
+        case 'name':      return sortDir === 'asc'
+          ? a.monster.name.localeCompare(b.monster.name)
+          : b.monster.name.localeCompare(a.monster.name);
+        case 'level':     va = a.monster.level;  vb = b.monster.level; break;
+        case 'penalty':   va = a.levelPenalty;   vb = b.levelPenalty; break;
+        case 'killTime':  va = a.killTimeS;       vb = b.killTimeS; break;
+        case 'dps':       va = a.dps;             vb = b.dps; break;
+        case 'expPerKill':va = a.expPerKill;      vb = b.expPerKill; break;
+        case 'expPerHour':va = a.expPerHour;      vb = b.expPerHour; break;
+        default:          va = a.expPerHour;      vb = b.expPerHour;
+      }
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+    return sorted;
+  }, [baseRows, sortKey, sortDir]);
+
+  function handleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDir(d => d === 'desc' ? 'asc' : 'desc');
+    } else {
+      setSortKey(key);
+      setSortDir('desc');
+    }
+  }
 
   const expNeeded = expTable.get(charLevel) ?? 0;
 
@@ -114,6 +160,8 @@ export function ExpComparisonTable({
     { label: "Lord's Cheer", sub: '+10%', checked: lordCheer, set: setLordCheer },
     { label: 'Master Malus', sub: '×0.5', checked: masterMalus, set: setMasterMalus },
   ];
+
+  const top3 = baseRows.slice(0, 3);
 
   return (
     <div className="flex flex-col gap-3">
@@ -179,9 +227,9 @@ export function ExpComparisonTable({
       </div>
 
       {/* ── Top 3 Level-Up cards ── */}
-      {rows.length > 0 && expNeeded > 0 && (
+      {top3.length > 0 && expNeeded > 0 && (
         <div className="grid grid-cols-3 gap-2">
-          {rows.slice(0, 3).map((row, i) => {
+          {top3.map((row, i) => {
             const killsForLvl = row.expPerKill > 0 ? Math.ceil(expNeeded / row.expPerKill) : 0;
             const timeForLvl = killsForLvl * row.killTimeS;
             return (
@@ -216,69 +264,107 @@ export function ExpComparisonTable({
       {/* ── Comparison Table ── */}
       <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-3 py-2.5 border-b border-gray-700">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Top {topN} Monster nach EXP/h</span>
-          <span className="text-xs text-gray-600">Char Lv. {charLevel} · {fmtCompact(expNeeded)} EXP für Lv-Up</span>
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            Top {topN} Monster
+          </span>
+          <span className="text-xs text-gray-600">
+            Char Lv. {charLevel}{expNeeded > 0 ? ` · ${fmtCompact(expNeeded)} EXP für Lv-Up` : ''}
+          </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[500px]">
+          <table className="w-full min-w-[640px]">
             <thead>
-              <tr className="text-[10px] text-gray-500 uppercase tracking-wider bg-gray-900/40 border-b border-gray-700/50">
-                <th className="text-left px-3 py-2 font-medium">#</th>
-                <th className="text-left px-2 py-2 font-medium">Monster</th>
-                <th className="text-right px-2 py-2 font-medium">Lv.</th>
-                <th className="text-right px-2 py-2 font-medium">Penalty</th>
-                <th className="text-right px-2 py-2 font-medium">Kill-Zeit</th>
-                <th className="text-right px-2 py-2 font-medium">DPS</th>
-                <th className="text-right px-2 py-2 font-medium">EXP/Kill</th>
-                <th className="text-right px-3 py-2 font-medium">EXP/h</th>
+              <tr className="text-[10px] text-gray-500 uppercase tracking-wider bg-gray-900/40 border-b border-gray-700/50 select-none">
+                <th className="text-left px-3 py-2 font-medium w-6">#</th>
+                <th className="text-left px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('name')}>
+                  Monster <SortIcon col="name" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('level')}>
+                  Lv. <SortIcon col="level" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('penalty')}>
+                  Penalty <SortIcon col="penalty" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('killTime')}>
+                  Kill-Zeit <SortIcon col="killTime" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('dps')}>
+                  DPS <SortIcon col="dps" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-2 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('expPerKill')}>
+                  EXP/Kill <SortIcon col="expPerKill" sortKey={sortKey} dir={sortDir} />
+                </th>
+                <th className="text-right px-3 py-2 font-medium cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort('expPerHour')}>
+                  EXP/h <SortIcon col="expPerHour" sortKey={sortKey} dir={sortDir} />
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700/30">
-              {rows.map((row, i) => (
-                <tr key={row.monster.id}
-                  className={`hover:bg-gray-700/30 transition-colors ${i === 0 ? 'bg-yellow-900/10' : ''}`}>
-                  <td className="px-3 py-2">
-                    <span className={`text-xs font-bold ${
-                      i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-amber-700' : 'text-gray-600'
-                    }`}>{i + 1}</span>
-                  </td>
-                  <td className="px-2 py-2 max-w-[160px]">
-                    <div className="text-xs text-gray-200 truncate">{row.monster.name}</div>
-                    <div className="text-[10px] text-gray-600">{row.monster.rank}</div>
-                  </td>
-                  <td className="px-2 py-2 text-right">
-                    <span className="text-xs text-gray-400 font-mono">{row.monster.level}</span>
-                  </td>
-                  <td className="px-2 py-2 text-right">
-                    <span className={`text-xs font-mono font-semibold ${
-                      row.levelPenalty >= 1 ? 'text-green-400' :
-                      row.levelPenalty >= 0.8 ? 'text-yellow-400' :
-                      row.levelPenalty >= 0.5 ? 'text-orange-400' : 'text-red-400'
-                    }`}>{(row.levelPenalty * 100).toFixed(0)}%</span>
-                  </td>
-                  <td className="px-2 py-2 text-right">
-                    <span className="text-xs text-gray-300 font-mono">
-                      {row.killTimeS < 1
-                        ? `${(row.killTimeS * 1000).toFixed(0)}ms`
-                        : row.killTimeS < 60
-                          ? `${row.killTimeS.toFixed(1)}s`
-                          : `${(row.killTimeS / 60).toFixed(1)}m`}
-                    </span>
-                  </td>
-                  <td className="px-2 py-2 text-right">
-                    <span className="text-xs text-blue-300 font-mono">{fmtCompact(row.dps)}</span>
-                  </td>
-                  <td className="px-2 py-2 text-right">
-                    <span className="text-xs text-purple-300 font-mono">{fmtCompact(row.expPerKill)}</span>
-                  </td>
-                  <td className="px-3 py-2 text-right">
-                    <span className={`text-xs font-mono font-semibold ${
-                      i === 0 ? 'text-yellow-300' : 'text-green-300'
-                    }`}>{fmtCompact(row.expPerHour)}</span>
-                  </td>
-                </tr>
-              ))}
+              {rows.map((row, i) => {
+                const pctPerKill = fmtPct(row.expPerKill, expNeeded);
+                const pctPerHour = fmtPct(row.expPerHour, expNeeded);
+                const isTop = sortKey === 'expPerHour' && i === 0;
+                return (
+                  <tr key={row.monster.id}
+                    className={`hover:bg-gray-700/30 transition-colors ${isTop ? 'bg-yellow-900/10' : ''}`}>
+                    <td className="px-3 py-2">
+                      <span className={`text-xs font-bold ${
+                        i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-amber-700' : 'text-gray-600'
+                      }`}>{i + 1}</span>
+                    </td>
+                    <td className="px-2 py-2 max-w-[160px]">
+                      <div className="text-xs text-gray-200 truncate">{row.monster.name}</div>
+                      <div className="text-[10px] text-gray-600">{row.monster.rank}</div>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <span className="text-xs text-gray-400 font-mono">{row.monster.level}</span>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <span className={`text-xs font-mono font-semibold ${
+                        row.levelPenalty >= 1 ? 'text-green-400' :
+                        row.levelPenalty >= 0.8 ? 'text-yellow-400' :
+                        row.levelPenalty >= 0.5 ? 'text-orange-400' : 'text-red-400'
+                      }`}>{(row.levelPenalty * 100).toFixed(0)}%</span>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <span className="text-xs text-gray-300 font-mono">
+                        {row.killTimeS < 1
+                          ? `${(row.killTimeS * 1000).toFixed(0)}ms`
+                          : row.killTimeS < 60
+                            ? `${row.killTimeS.toFixed(1)}s`
+                            : `${(row.killTimeS / 60).toFixed(1)}m`}
+                      </span>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <span className="text-xs text-blue-300 font-mono">{fmtCompact(row.dps)}</span>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <div className="text-xs text-purple-300 font-mono">{fmtCompact(row.expPerKill)}</div>
+                      {pctPerKill && (
+                        <div className="text-[10px] text-purple-500 font-mono">{pctPerKill} Lv-Up</div>
+                      )}
+                    </td>
+                    <td className="px-3 py-2 text-right">
+                      <div className={`text-xs font-mono font-semibold ${
+                        isTop ? 'text-yellow-300' : 'text-green-300'
+                      }`}>{fmtCompact(row.expPerHour)}</div>
+                      {pctPerHour && (
+                        <div className={`text-[10px] font-mono ${isTop ? 'text-yellow-600' : 'text-green-700'}`}>
+                          {pctPerHour}/h
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
               {rows.length === 0 && (
                 <tr>
                   <td colSpan={8} className="px-3 py-8 text-center text-gray-500 text-sm">
@@ -292,7 +378,7 @@ export function ExpComparisonTable({
         </div>
 
         <div className="px-3 py-2 border-t border-gray-700/50 text-[10px] text-gray-600">
-          * Berechnung ohne Laufzeit zwischen Monstern. Level-Penalty nach Flyff-Formel berücksichtigt.
+          * Berechnung ohne Laufzeit zwischen Monstern. Level-Penalty nach Flyff-Formel berücksichtigt. Spaltenheader klicken zum Sortieren.
         </div>
       </div>
     </div>
