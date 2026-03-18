@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Search, X, ChevronDown, ArrowUpDown, ChevronRight, Sword, Shield, Star, Package, Sparkles } from 'lucide-react';
+import { Search, X, ChevronDown, ArrowUpDown, ChevronRight, Sword, Shield, Star, Package, Sparkles, SlidersHorizontal } from 'lucide-react';
 import { useItemDatabase } from '../hooks/useItemDatabase';
 import { ItemCard } from './ItemCard';
 import { SetEffectPanel } from './SetEffectPanel';
@@ -237,6 +237,7 @@ export function ItemManager({ compareList, onAddToCompare, onRemoveFromCompare, 
   });
   const [page, setPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState<FlyffItem | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const setFilter = useCallback(<K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     setFilters(f => ({ ...f, [key]: value }));
@@ -323,9 +324,22 @@ export function ItemManager({ compareList, onAddToCompare, onRemoveFromCompare, 
   );
 
   return (
-    <div className="flex h-full gap-4">
+    <div className="flex h-full gap-2 sm:gap-4 relative">
+      {/* Mobile sidebar overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 sm:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-      <aside className="w-60 flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
+      <aside className={`
+        sm:w-60 sm:flex-shrink-0 sm:flex sm:flex-col sm:gap-3 sm:overflow-y-auto sm:static sm:z-auto
+        fixed top-0 left-0 h-full w-72 z-30 bg-gray-950 flex flex-col gap-3 overflow-y-auto p-3
+        transition-transform duration-200
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'}
+      `}>
 
         {/* Category Navigation Tree */}
         <nav className="bg-gray-800 rounded-lg overflow-hidden">
@@ -497,7 +511,15 @@ export function ItemManager({ compareList, onAddToCompare, onRemoveFromCompare, 
       <div className="flex-1 flex flex-col gap-3 min-w-0">
         {/* Search + breadcrumb */}
         <div className="flex flex-col gap-2">
-          <div className="relative">
+          <div className="flex gap-2">
+            {/* Mobile filter toggle */}
+            <button
+              onClick={() => setSidebarOpen(v => !v)}
+              className="sm:hidden flex-shrink-0 flex items-center justify-center w-10 h-10 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 hover:text-gray-200"
+            >
+              <SlidersHorizontal size={16} />
+            </button>
+            <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -511,6 +533,7 @@ export function ItemManager({ compareList, onAddToCompare, onRemoveFromCompare, 
                 <X size={14} />
               </button>
             )}
+            </div>
           </div>
 
           {/* Active filter breadcrumb */}

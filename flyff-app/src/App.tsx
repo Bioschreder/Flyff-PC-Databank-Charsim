@@ -55,36 +55,38 @@ function MainApp() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
-      <header className="bg-gray-900 border-b border-gray-800 px-6 py-3 flex items-center gap-4">
-        <div className="flex items-center gap-2 shrink-0">
-          <Sword size={20} className="text-blue-400" />
-          <span className="font-bold text-lg tracking-tight">Flyff DB</span>
-          <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">PC</span>
+      <header className="bg-gray-900 border-b border-gray-800 px-3 sm:px-6">
+        {/* Top row: logo + auth */}
+        <div className="flex items-center justify-between py-2">
+          <div className="flex items-center gap-2 shrink-0">
+            <Sword size={18} className="text-blue-400" />
+            <span className="font-bold text-base tracking-tight">Flyff DB</span>
+            <span className="text-xs text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded">PC</span>
+          </div>
+          <div className="shrink-0">
+            <AuthButton auth={auth} />
+          </div>
         </div>
-
-        <nav className="flex gap-1 ml-2 flex-1 overflow-x-auto">
+        {/* Bottom row: tabs */}
+        <nav className="flex gap-1 overflow-x-auto pb-2 -mx-1 px-1">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-1.5 rounded text-sm transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-sm transition-colors whitespace-nowrap shrink-0 ${
                 activeTab === tab.id
                   ? 'bg-blue-700 text-white'
                   : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
               }`}
             >
               {tab.icon}
-              {tab.label}
+              <span className="hidden sm:inline">{tab.label}</span>
             </button>
           ))}
         </nav>
-
-        <div className="shrink-0 ml-2">
-          <AuthButton auth={auth} />
-        </div>
       </header>
 
-      <main className="flex-1 p-4 overflow-hidden" style={{ height: 'calc(100vh - 57px)' }}>
+      <main className="flex-1 p-2 sm:p-4 overflow-hidden" style={{ height: 'calc(100dvh - 84px)' }}>
         {activeTab === 'manager' && (
           <ItemManager
             compareList={compareList}
