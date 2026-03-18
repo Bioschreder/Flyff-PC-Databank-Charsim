@@ -26,16 +26,79 @@ const SLOT_LABELS: Record<EquipSlot, string> = {
   necklace: 'Halskette', talisman1: 'Talisman 1', talisman2: 'Talisman 2',
 };
 
-// Build set of job names + IDs that the current job can use (self + all ancestors)
+// Maps job IDs → the item.job field strings that job is allowed to use.
+// Needed because jobs.json uses different display names than the item database.
+const JOB_ITEM_NAMES: Record<string, string[]> = {
+  JOB_VAGRANT:             ['Vagrant'],
+  JOB_MERCENARY:           ['Mercenary'],
+  JOB_ACROBAT:             ['Acrobat'],
+  JOB_ASSIST:              ['Assist'],
+  JOB_MAGICIAN:            ['Magician'],
+  JOB_KNIGHT:              ['Knight'],
+  JOB_BLADE:               ['Blade'],
+  JOB_JESTER:              ['Jester'],
+  JOB_RANGER:              ['Ranger'],
+  JOB_RINGMASTER:          ['Ringmaster'],
+  JOB_BILLPOSTER:          ['Billposter'],
+  JOB_PSYCHIKEEPER:        ['Psykeeper'],
+  JOB_ELEMENTOR:           ['Elementor'],
+  JOB_KNIGHT_MASTER:       ['Knight (Master)'],
+  JOB_BLADE_MASTER:        ['Blade (Master)'],
+  JOB_JESTER_MASTER:       ['Jester (Master)'],
+  JOB_RANGER_MASTER:       ['Ranger (Master)'],
+  JOB_RINGMASTER_MASTER:   ['Ringmaster (Master)'],
+  JOB_BILLPOSTER_MASTER:   ['Billposter (Master)'],
+  JOB_PSYCHIKEEPER_MASTER: ['Psykeeper (Master)'],
+  JOB_ELEMENTOR_MASTER:    ['Elementor (Master)'],
+  JOB_KNIGHT_HERO:         ['Knight (Hero)'],
+  JOB_BLADE_HERO:          ['Blade (Hero)'],
+  JOB_JESTER_HERO:         ['Jester (Hero)'],
+  JOB_RANGER_HERO:         ['Ranger (Hero)'],
+  JOB_RINGMASTER_HERO:     ['Ringmaster (Hero)'],
+  JOB_BILLPOSTER_HERO:     ['Billposter (Hero)'],
+  JOB_PSYCHIKEEPER_HERO:   ['Psykeeper (Hero)'],
+  JOB_ELEMENTOR_HERO:      ['Elementor (Hero)'],
+  // Hero 130-190: same item names as their 121-130 counterpart + unique hero names
+  JOB_LORDTEMPLER_HERO:    ['Knight (Hero)', 'Templar'],
+  JOB_STORMBLADE_HERO:     ['Blade (Hero)', 'Slayer'],
+  JOB_WINDLURKER_HERO:     ['Jester (Hero)', 'Harlequin'],
+  JOB_CRACKSHOOTER_HERO:   ['Ranger (Hero)', 'Crackshooter'],
+  JOB_FLORIST_HERO:        ['Ringmaster (Hero)', 'Seraph'],
+  JOB_FORCEMASTER_HERO:    ['Billposter (Hero)', 'Force Master'],
+  JOB_MENTALIST_HERO:      ['Psykeeper (Hero)', 'Mentalist'],
+  JOB_ELEMENTORLORD_HERO:  ['Elementor (Hero)', 'Arcanist'],
+};
+
+// For Hero jobs that have parent:null in jobs.json, we manually define
+// their logical parent so the ancestor chain is complete.
+const HERO_FALLBACK_PARENT: Record<string, string> = {
+  JOB_KNIGHT_HERO:       'JOB_KNIGHT_MASTER',
+  JOB_BLADE_HERO:        'JOB_BLADE_MASTER',
+  JOB_JESTER_HERO:       'JOB_JESTER_MASTER',
+  JOB_RANGER_HERO:       'JOB_RANGER_MASTER',
+  JOB_RINGMASTER_HERO:   'JOB_RINGMASTER_MASTER',
+  JOB_BILLPOSTER_HERO:   'JOB_BILLPOSTER_MASTER',
+  JOB_PSYCHIKEEPER_HERO: 'JOB_PSYCHIKEEPER_MASTER',
+  JOB_ELEMENTOR_HERO:    'JOB_ELEMENTOR_MASTER',
+};
+
+// Build set of item.job strings the current job is allowed to use (self + all ancestors)
 function buildAncestors(jobId: string, jobs: JobData[]): { names: Set<string>; ids: Set<string> } {
   const names = new Set<string>();
   const ids = new Set<string>();
-  let current: JobData | undefined = jobs.find(j => j.id === jobId);
-  while (current) {
-    names.add(current.name);
+  const jobMap = new Map(jobs.map(j => [j.id, j]));
+
+  let currentId: string | null | undefined = jobId;
+  while (currentId) {
+    const current = jobMap.get(currentId);
+    if (!current) break;
     ids.add(current.id);
-    if (!current.parent) break;
-    current = jobs.find(j => j.id === current!.parent);
+    names.add(current.name);
+    // Add the normalized item.job names for this job
+    for (const n of (JOB_ITEM_NAMES[current.id] ?? [])) names.add(n);
+    // Determine next parent (use fallback for orphaned hero jobs)
+    const nextParent = current.parent ?? HERO_FALLBACK_PARENT[current.id] ?? null;
+    currentId = nextParent;
   }
   return { names, ids };
 }
@@ -191,9 +254,10 @@ export function ItemConfigPanel({
         itemMatchesGender(i, gender) &&
         (!q || i.name.toLowerCase().includes(q))
       )
-      .sort((a, b) => b.level - a.level)
-      .slice(0, 100);
+      .sort((a, b) => b.level - a.level);
   }, [slotItems, ancestors, gender, search]);
+
+  const displayedItems = filteredItems.slice(0, 200);
 
   const ACCESSORY_SLOTS: EquipSlot[] = ['ring1', 'ring2', 'ear1', 'ear2', 'necklace', 'talisman1', 'talisman2'];
   const WEAPON_SLOTS: EquipSlot[] = ['weapon', 'shield'];
@@ -378,7 +442,7 @@ export function ItemConfigPanel({
               {filteredItems.length === 0 && (
                 <div className="text-xs text-gray-600 text-center py-4">Keine Items gefunden</div>
               )}
-              {filteredItems.map(item => (
+              {displayedItems.map(item => (
                 <ItemTooltipWrapper
                   key={item.id}
                   item={item}
@@ -424,6 +488,11 @@ export function ItemConfigPanel({
                   </button>
                 </ItemTooltipWrapper>
               ))}
+              {filteredItems.length > 200 && (
+                <div className="text-[10px] text-gray-600 text-center py-2 border-t border-gray-700/40">
+                  {filteredItems.length - 200} weitere – Suche verfeinern
+                </div>
+              )}
             </div>
           </div>
 
