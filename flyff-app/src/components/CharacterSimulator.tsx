@@ -636,7 +636,7 @@ export function CharacterSimulator({
   const [skillLevels, setSkillLevels] = useState<Record<string, number>>({});
   const [skillSearch, setSkillSearch] = useState('');
   const [activeSlot, setActiveSlot] = useState<EquipSlot | null>(null);
-  const [activePowerupTab, setActivePowerupTab] = useState(false);
+
   const [showConfigManager, setShowConfigManager] = useState(false);
   const [rightTab, setRightTab] = useState<'equip' | 'stats' | 'skills' | 'powerups' | 'combat' | 'exptable'>('equip');
 
