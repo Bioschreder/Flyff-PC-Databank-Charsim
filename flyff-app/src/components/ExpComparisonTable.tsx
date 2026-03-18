@@ -34,6 +34,9 @@ interface MonsterRow {
 
 type SortKey = 'rank' | 'name' | 'level' | 'penalty' | 'killTime' | 'dps' | 'expPerKill' | 'expPerHour';
 type SortDir = 'asc' | 'desc';
+type KillMode = '1on1' | 'aoe';
+
+const MIN_KILL_TIME_S = 1.0;
 
 function fmtCompact(n: number): string {
   if (!isFinite(n) || n <= 0) return '0';
@@ -82,8 +85,29 @@ export function ExpComparisonTable({
   const [sortKey, setSortKey] = useState<SortKey>('expPerHour');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
+  // Kill-Mode: 1on1 or AoE
+  const [killMode, setKillMode] = useState<KillMode>('1on1');
+  const [aoeMobCount, setAoeMobCount] = useState(5);
+  const [aoeCycleMin, setAoeCycleMin] = useState(1);
+
+  // Monster exclusion set (by monster id)
+  const [excludedIds, setExcludedIds] = useState<Set<string>>(new Set());
+  const [showExcludePanel, setShowExcludePanel] = useState(false);
+  const [excludeSearch, setExcludeSearch] = useState('');
+
   const selectedAmpli = AMPLI_TIERS.find(t => t.id === ampliTierId) ?? AMPLI_TIERS[0];
   const attackIntervalMs = calcAttackIntervalMs(weaponType, dex);
+
+  // Effective kill time in seconds considering mode and min kill time
+  function getEffectiveKillTimeS(rawKillTimeS: number): number {
+    const clamped = Math.max(MIN_KILL_TIME_S, rawKillTimeS);
+    if (killMode === 'aoe') {
+      // In AoE mode: aoeMobCount mobs per aoeCycleMin minutes
+      const cycleS = aoeCycleMin * 60;
+      return cycleS / aoeMobCount;
+    }
+    return clamped;
+  }
 
   const baseRows = useMemo((): MonsterRow[] => {
     const expMods: ExpModifiers = {
@@ -96,7 +120,7 @@ export function ExpComparisonTable({
     };
 
     return monsters
-      .filter(m => m.exp > 0 && m.hp > 0 && isFinite(m.hp))
+      .filter(m => m.exp > 0 && m.hp > 0 && isFinite(m.hp) && !excludedIds.has(m.id))
       .map(m => {
         const lvlMod = 1 + (charLevel - m.level) * 0.01;
         const effDef = m.def * Math.max(0.1, 1 / Math.max(0.01, lvlMod));
@@ -107,7 +131,8 @@ export function ExpComparisonTable({
         const crit = avg * 2 * (1 + critDmg / 100);
         const expected = avg * (1 - cr) + crit * cr;
         const dps = expected / (attackIntervalMs / 1000);
-        const killTimeS = dps > 0 ? m.hp / dps : Infinity;
+        const rawKillTimeS = dps > 0 ? m.hp / dps : Infinity;
+        const killTimeS = getEffectiveKillTimeS(rawKillTimeS);
         const levelPenalty = calcExpLevelModifier(charLevel, m.level, isMasterJob);
         const expResult = calcFlyffExp(m.exp, charLevel, m.level, expMods);
         const expPerHour = isFinite(killTimeS) && killTimeS > 0
@@ -121,10 +146,11 @@ export function ExpComparisonTable({
     monsters, charAtkMin, charAtkMax, charLevel, critRate, critDmg,
     attackIntervalMs, expEventMult, lordEventPct, ampliTierId, ampliStacks,
     expBonus, cheerActive, lordCheer, masterMalus, votersBuff, topN, isMasterJob,
+    excludedIds, killMode, aoeMobCount, aoeCycleMin,
   ]);
 
   const rows = useMemo(() => {
-    const sorted = [...baseRows].sort((a, b) => {
+    return [...baseRows].sort((a, b) => {
       let va = 0, vb = 0;
       switch (sortKey) {
         case 'name':      return sortDir === 'asc'
@@ -140,7 +166,6 @@ export function ExpComparisonTable({
       }
       return sortDir === 'asc' ? va - vb : vb - va;
     });
-    return sorted;
   }, [baseRows, sortKey, sortDir]);
 
   function handleSort(key: SortKey) {
@@ -150,6 +175,14 @@ export function ExpComparisonTable({
       setSortKey(key);
       setSortDir('desc');
     }
+  }
+
+  function toggleExclude(id: string) {
+    setExcludedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
   }
 
   const expNeeded = expTable.get(charLevel) ?? 0;
@@ -163,12 +196,66 @@ export function ExpComparisonTable({
 
   const top3 = baseRows.slice(0, 3);
 
+  // Candidates for exclusion panel: monsters that have exp and are valid
+  const excludeCandidates = useMemo(() => {
+    return monsters
+      .filter(m => m.exp > 0 && m.hp > 0 && isFinite(m.hp))
+      .filter(m => !excludeSearch || m.name.toLowerCase().includes(excludeSearch.toLowerCase()))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [monsters, excludeSearch]);
+
   return (
     <div className="flex flex-col gap-3">
 
-      {/* ── EXP Modifier Controls ── */}
+      {/* ── Kill Mode & EXP Modifier Controls ── */}
       <div className="bg-gray-800 border border-gray-700 rounded-xl p-3">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">EXP Modifikatoren</div>
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Modus & EXP Modifikatoren</div>
+
+        {/* Kill Mode */}
+        <div className="flex gap-2 mb-3 items-center flex-wrap">
+          <span className="text-xs text-gray-500">Kill-Modus:</span>
+          <button
+            onClick={() => setKillMode('1on1')}
+            className={`px-3 py-1.5 rounded-lg text-xs border transition-colors ${
+              killMode === '1on1' ? 'bg-blue-700 border-blue-600 text-white' : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-500'
+            }`}>
+            1on1
+          </button>
+          <button
+            onClick={() => setKillMode('aoe')}
+            className={`px-3 py-1.5 rounded-lg text-xs border transition-colors ${
+              killMode === 'aoe' ? 'bg-purple-700 border-purple-600 text-white' : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-500'
+            }`}>
+            AoE
+          </button>
+          {killMode === 'aoe' && (
+            <div className="flex items-center gap-2 flex-wrap ml-2">
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500">Monster/Zyklus:</span>
+                <button onClick={() => setAoeMobCount(c => Math.max(1, c - 1))}
+                  className="w-6 h-6 bg-gray-700 border border-gray-600 rounded text-gray-300 hover:text-white text-sm flex items-center justify-center">−</button>
+                <span className="text-xs text-gray-200 w-5 text-center font-mono">{aoeMobCount}</span>
+                <button onClick={() => setAoeMobCount(c => Math.min(50, c + 1))}
+                  className="w-6 h-6 bg-gray-700 border border-gray-600 rounded text-gray-300 hover:text-white text-sm flex items-center justify-center">+</button>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500">Minuten/Zyklus:</span>
+                <button onClick={() => setAoeCycleMin(c => Math.max(0.5, +(c - 0.5).toFixed(1)))}
+                  className="w-6 h-6 bg-gray-700 border border-gray-600 rounded text-gray-300 hover:text-white text-sm flex items-center justify-center">−</button>
+                <span className="text-xs text-gray-200 w-6 text-center font-mono">{aoeCycleMin}</span>
+                <button onClick={() => setAoeCycleMin(c => Math.min(60, +(c + 0.5).toFixed(1)))}
+                  className="w-6 h-6 bg-gray-700 border border-gray-600 rounded text-gray-300 hover:text-white text-sm flex items-center justify-center">+</button>
+              </div>
+              <span className="text-[10px] text-purple-400">
+                → {(aoeMobCount / aoeCycleMin).toFixed(1)} Mobs/min
+              </span>
+            </div>
+          )}
+          {killMode === '1on1' && (
+            <span className="text-[10px] text-gray-600 ml-2">Min. Kill-Zeit: {MIN_KILL_TIME_S}s</span>
+          )}
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
           <div>
             <label className="text-xs text-gray-500 block mb-1">EXP Event</label>
@@ -226,6 +313,70 @@ export function ExpComparisonTable({
         </div>
       </div>
 
+      {/* ── Monster Exclusion Panel ── */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
+        <button
+          onClick={() => setShowExcludePanel(p => !p)}
+          className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-gray-700/30 transition-colors">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            Monster ausschließen
+            {excludedIds.size > 0 && (
+              <span className="ml-2 px-1.5 py-0.5 bg-red-800 text-red-200 rounded text-[10px]">
+                {excludedIds.size} ausgeschlossen
+              </span>
+            )}
+          </span>
+          <span className="text-gray-600 text-xs">{showExcludePanel ? '▲' : '▼'}</span>
+        </button>
+        {showExcludePanel && (
+          <div className="border-t border-gray-700 p-3">
+            <div className="flex gap-2 mb-2">
+              <input
+                type="text"
+                placeholder="Monster suchen..."
+                value={excludeSearch}
+                onChange={e => setExcludeSearch(e.target.value)}
+                className="flex-1 bg-gray-900 border border-gray-700 rounded px-2 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-gray-500"
+              />
+              {excludedIds.size > 0 && (
+                <button
+                  onClick={() => setExcludedIds(new Set())}
+                  className="px-2.5 py-1.5 bg-red-900/50 border border-red-800 rounded text-xs text-red-300 hover:bg-red-900 transition-colors">
+                  Alle zurücksetzen
+                </button>
+              )}
+            </div>
+            <div className="max-h-48 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-1">
+              {excludeCandidates.slice(0, 150).map(m => {
+                const excluded = excludedIds.has(m.id);
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => toggleExclude(m.id)}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded text-left text-xs transition-colors ${
+                      excluded
+                        ? 'bg-red-900/40 border border-red-800/50 text-red-300 line-through opacity-60'
+                        : 'bg-gray-900 border border-gray-700 text-gray-300 hover:border-gray-500'
+                    }`}>
+                    <span className={`w-2 h-2 rounded-full shrink-0 ${excluded ? 'bg-red-500' : 'bg-gray-600'}`} />
+                    <span className="truncate">{m.name}</span>
+                    <span className="text-gray-600 shrink-0">Lv.{m.level}</span>
+                  </button>
+                );
+              })}
+              {excludeCandidates.length === 0 && (
+                <div className="col-span-3 text-center text-gray-600 text-xs py-3">Keine Monster gefunden.</div>
+              )}
+              {excludeCandidates.length > 150 && (
+                <div className="col-span-3 text-center text-gray-600 text-[10px] py-1">
+                  {excludeCandidates.length - 150} weitere – Suche verfeinern
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* ── Top 3 Level-Up cards ── */}
       {top3.length > 0 && expNeeded > 0 && (
         <div className="grid grid-cols-3 gap-2">
@@ -266,6 +417,7 @@ export function ExpComparisonTable({
         <div className="flex items-center justify-between px-3 py-2.5 border-b border-gray-700">
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
             Top {topN} Monster
+            {killMode === 'aoe' && <span className="ml-2 text-purple-400">[AoE: {aoeMobCount} Mobs/{aoeCycleMin}min]</span>}
           </span>
           <span className="text-xs text-gray-600">
             Char Lv. {charLevel}{expNeeded > 0 ? ` · ${fmtCompact(expNeeded)} EXP für Lv-Up` : ''}
@@ -305,6 +457,7 @@ export function ExpComparisonTable({
                   onClick={() => handleSort('expPerHour')}>
                   EXP/h <SortIcon col="expPerHour" sortKey={sortKey} dir={sortDir} />
                 </th>
+                <th className="px-2 py-2 font-medium w-8" />
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700/30">
@@ -362,12 +515,20 @@ export function ExpComparisonTable({
                         </div>
                       )}
                     </td>
+                    <td className="px-2 py-2 text-center">
+                      <button
+                        onClick={() => toggleExclude(row.monster.id)}
+                        title="Monster ausschließen"
+                        className="text-gray-700 hover:text-red-400 transition-colors text-sm leading-none">
+                        ✕
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-3 py-8 text-center text-gray-500 text-sm">
+                  <td colSpan={9} className="px-3 py-8 text-center text-gray-500 text-sm">
                     Keine Daten verfügbar.
                     <div className="text-xs text-gray-600 mt-1">Waffe ausrüsten und Stats konfigurieren.</div>
                   </td>
@@ -378,7 +539,7 @@ export function ExpComparisonTable({
         </div>
 
         <div className="px-3 py-2 border-t border-gray-700/50 text-[10px] text-gray-600">
-          * Berechnung ohne Laufzeit zwischen Monstern. Level-Penalty nach Flyff-Formel berücksichtigt. Spaltenheader klicken zum Sortieren.
+          * {killMode === '1on1' ? `1on1-Modus, min. Kill-Zeit ${MIN_KILL_TIME_S}s.` : `AoE-Modus: ${aoeMobCount} Mobs pro ${aoeCycleMin} Min.`} Level-Penalty nach Flyff-Formel. Spaltenheader klicken zum Sortieren. ✕ zum Ausschließen.
         </div>
       </div>
     </div>
