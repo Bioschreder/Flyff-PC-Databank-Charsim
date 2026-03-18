@@ -82,6 +82,7 @@ export function ExpComparisonTable({
   const [cheerActive, setCheerActive] = useState(false);
   const [lordCheer, setLordCheer] = useState(false);
   const [topN] = useState(20);
+  const [showAll, setShowAll] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>('expPerHour');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
@@ -140,17 +141,16 @@ export function ExpComparisonTable({
         return { monster: m, killTimeS, expPerKill: expResult.expPerKill, expPerHour, levelPenalty, dps };
       })
       .filter(r => r.expPerHour > 0 && isFinite(r.expPerHour))
-      .sort((a, b) => b.expPerHour - a.expPerHour)
-      .slice(0, topN);
+      .sort((a, b) => b.expPerHour - a.expPerHour);
   }, [
     monsters, charAtkMin, charAtkMax, charLevel, critRate, critDmg,
     attackIntervalMs, expEventMult, lordEventPct, ampliTierId, ampliStacks,
-    expBonus, cheerActive, lordCheer, masterMalus, votersBuff, topN, isMasterJob,
+    expBonus, cheerActive, lordCheer, masterMalus, votersBuff, isMasterJob,
     excludedIds, killMode, aoeMobCount, aoeCycleMin,
   ]);
 
   const rows = useMemo(() => {
-    return [...baseRows].sort((a, b) => {
+    const sorted = [...baseRows].sort((a, b) => {
       let va = 0, vb = 0;
       switch (sortKey) {
         case 'name':      return sortDir === 'asc'
@@ -166,7 +166,8 @@ export function ExpComparisonTable({
       }
       return sortDir === 'asc' ? va - vb : vb - va;
     });
-  }, [baseRows, sortKey, sortDir]);
+    return showAll ? sorted : sorted.slice(0, topN);
+  }, [baseRows, sortKey, sortDir, showAll, topN]);
 
   function handleSort(key: SortKey) {
     if (sortKey === key) {
@@ -415,10 +416,19 @@ export function ExpComparisonTable({
       {/* ── Comparison Table ── */}
       <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-3 py-2.5 border-b border-gray-700">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Top {topN} Monster
-            {killMode === 'aoe' && <span className="ml-2 text-purple-400">[AoE: {aoeMobCount} Mobs/{aoeCycleMin}min]</span>}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              {showAll ? `Alle ${baseRows.length}` : `Top ${topN}`} Monster
+              {killMode === 'aoe' && <span className="ml-2 text-purple-400">[AoE: {aoeMobCount} Mobs/{aoeCycleMin}min]</span>}
+            </span>
+            {baseRows.length > topN && (
+              <button
+                onClick={() => setShowAll(s => !s)}
+                className="text-[10px] px-2 py-0.5 rounded border border-gray-600 text-gray-500 hover:text-gray-300 hover:border-gray-500 transition-colors">
+                {showAll ? `Nur Top ${topN}` : `Alle ${baseRows.length} anzeigen`}
+              </button>
+            )}
+          </div>
           <span className="text-xs text-gray-600">
             Char Lv. {charLevel}{expNeeded > 0 ? ` · ${fmtCompact(expNeeded)} EXP für Lv-Up` : ''}
           </span>
