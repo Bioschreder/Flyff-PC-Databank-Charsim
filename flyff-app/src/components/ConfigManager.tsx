@@ -286,6 +286,19 @@ export function ConfigManager({ currentState, auth, onLoad, onClose }: Props) {
           <span className="text-[11px] text-gray-600">Konfiguration aus Datei laden</span>
         </div>
 
+        {/* Error banner */}
+        {cloud.error && (
+          <div className="px-4 py-2 bg-red-900/30 border-b border-red-700/50 flex items-center justify-between gap-2">
+            <span className="text-xs text-red-300">{cloud.error}</span>
+            <button
+              onClick={cloud.refresh}
+              className="shrink-0 px-2 py-1 rounded bg-red-700/50 hover:bg-red-600/60 text-red-200 text-xs transition-colors"
+            >
+              Erneut versuchen
+            </button>
+          </div>
+        )}
+
         {/* List */}
         <div className="overflow-y-auto flex-1 p-2 space-y-1.5">
           {cloud.loading && isLoggedIn && cloudList.length === 0 ? (

@@ -16,6 +16,7 @@ export interface CloudConfig {
 export interface UseCloudConfigs {
   configs: CloudConfig[];
   loading: boolean;
+  error: string | null;
   saveConfig: (name: string, state: SimulatorState) => Promise<CloudConfig | null>;
   updateConfig: (id: string, patch: Partial<Pick<CloudConfig, 'name' | 'state' | 'is_public'>>) => Promise<void>;
   deleteConfig: (id: string) => Promise<void>;
@@ -25,17 +26,23 @@ export interface UseCloudConfigs {
 }
 
 export function useCloudConfigs(user: User | null): UseCloudConfigs {
-  const [configs, setConfigs]   = useState<CloudConfig[]>([]);
-  const [loading, setLoading]   = useState(false);
+  const [configs, setConfigs] = useState<CloudConfig[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (!user) { setConfigs([]); return; }
     setLoading(true);
-    const { data, error } = await supabase
+    setError(null);
+    const { data, error: err } = await supabase
       .from('sim_configs')
       .select('*')
       .order('updated_at', { ascending: false });
-    if (!error && data) setConfigs(data as CloudConfig[]);
+    if (err) {
+      setError(`Laden fehlgeschlagen: ${err.message}`);
+    } else {
+      setConfigs((data ?? []) as CloudConfig[]);
+    }
     setLoading(false);
   }, [user]);
 
@@ -43,58 +50,65 @@ export function useCloudConfigs(user: User | null): UseCloudConfigs {
 
   async function saveConfig(name: string, state: SimulatorState): Promise<CloudConfig | null> {
     if (!user) return null;
-    const { data, error } = await supabase
+    setError(null);
+    const { data, error: err } = await supabase
       .from('sim_configs')
-      .insert({ name, state, user_id: user.id })
+      .insert({ name, state })   // user_id wird durch RLS gesetzt
       .select()
       .single();
-    if (error || !data) return null;
-    setConfigs(prev => [data as CloudConfig, ...prev]);
-    return data as CloudConfig;
+    if (err) {
+      setError(`Speichern fehlgeschlagen: ${err.message}`);
+      return null;
+    }
+    const saved = data as CloudConfig;
+    setConfigs(prev => [saved, ...prev]);
+    return saved;
   }
 
   async function updateConfig(id: string, patch: Partial<Pick<CloudConfig, 'name' | 'state' | 'is_public'>>) {
-    const { data, error } = await supabase
+    setError(null);
+    const { data, error: err } = await supabase
       .from('sim_configs')
       .update({ ...patch, updated_at: new Date().toISOString() })
       .eq('id', id)
       .select()
       .single();
-    if (!error && data) {
-      setConfigs(prev => prev.map(c => c.id === id ? data as CloudConfig : c));
-    }
+    if (err) setError(`Update fehlgeschlagen: ${err.message}`);
+    else if (data) setConfigs(prev => prev.map(c => c.id === id ? data as CloudConfig : c));
   }
 
   async function deleteConfig(id: string) {
-    const { error } = await supabase.from('sim_configs').delete().eq('id', id);
-    if (!error) setConfigs(prev => prev.filter(c => c.id !== id));
+    setError(null);
+    const { error: err } = await supabase.from('sim_configs').delete().eq('id', id);
+    if (err) setError(`Löschen fehlgeschlagen: ${err.message}`);
+    else setConfigs(prev => prev.filter(c => c.id !== id));
   }
 
   async function togglePublic(id: string): Promise<string | null> {
     const cfg = configs.find(c => c.id === id);
     if (!cfg) return null;
     const newPublic = !cfg.is_public;
-    const { data, error } = await supabase
+    const { data, error: err } = await supabase
       .from('sim_configs')
       .update({ is_public: newPublic, updated_at: new Date().toISOString() })
       .eq('id', id)
       .select('share_token, is_public')
       .single();
-    if (error || !data) return null;
+    if (err) { setError(`Teilen fehlgeschlagen: ${err.message}`); return null; }
     setConfigs(prev => prev.map(c => c.id === id ? { ...c, is_public: newPublic } : c));
     return newPublic ? (data as { share_token: string }).share_token : null;
   }
 
   async function loadByToken(token: string): Promise<CloudConfig | null> {
-    const { data, error } = await supabase
+    const { data, error: err } = await supabase
       .from('sim_configs')
       .select('*')
       .eq('share_token', token)
       .eq('is_public', true)
       .single();
-    if (error || !data) return null;
+    if (err || !data) return null;
     return data as CloudConfig;
   }
 
-  return { configs, loading, saveConfig, updateConfig, deleteConfig, togglePublic, loadByToken, refresh };
+  return { configs, loading, error, saveConfig, updateConfig, deleteConfig, togglePublic, loadByToken, refresh };
 }
