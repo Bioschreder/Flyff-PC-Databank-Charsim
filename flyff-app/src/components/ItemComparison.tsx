@@ -1,4 +1,4 @@
-import { X, ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { X, ArrowUp, ArrowDown } from 'lucide-react';
 import type { FlyffItem } from '../types';
 
 interface Props {
@@ -65,7 +65,7 @@ export function ItemComparison({ items, onRemove }: Props) {
     maxVals[key] = Math.max(...items.map(i => i.stats[key] ?? 0));
   }
 
-  const colWidth = `${100 / items.length}%`;
+  const _colWidth = `${100 / items.length}%`;
 
   return (
     <div className="flex flex-col gap-4 overflow-x-auto">
@@ -157,7 +157,7 @@ function StatSection({ label, children }: { label: string; children: React.React
   );
 }
 
-function StatRow({ label, items, statKey, maxVals, getVal, numVal }: {
+function StatRow({ label, items, statKey: _statKey, maxVals: _maxVals, getVal, numVal }: {
   label: string;
   items: FlyffItem[];
   statKey: string;
@@ -172,7 +172,7 @@ function StatRow({ label, items, statKey, maxVals, getVal, numVal }: {
   return (
     <div className="flex border-b border-gray-700 last:border-0">
       <div className="w-32 flex-shrink-0 px-4 py-2.5 text-xs text-gray-500 flex items-center">{label}</div>
-      {items.map((item, idx) => {
+      {items.map((item, _idx) => {
         const val = getVal(item);
         const num = numVal ? numVal(item) : null;
         const isBest = num !== null && max !== null && min !== null && max > 0 && num === max && max !== min;

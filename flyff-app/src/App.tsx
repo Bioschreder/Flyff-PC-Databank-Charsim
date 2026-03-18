@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Database, GitCompare, Sword, Users, Bug } from 'lucide-react';
 import { ItemManager } from './components/ItemManager';
 import { ItemComparison } from './components/ItemComparison';
@@ -14,7 +14,6 @@ type Tab = 'manager' | 'compare' | 'simulator' | 'monsters';
 
 function MainApp() {
   const auth = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const [activeTab, setActiveTab]   = useState<Tab>('manager');

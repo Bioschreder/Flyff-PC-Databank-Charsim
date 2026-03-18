@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Search, X, ChevronDown, ArrowUpDown, ChevronRight, Sword, Shield, Star, Package, Sparkles } from 'lucide-react';
 import { useItemDatabase } from '../hooks/useItemDatabase';
 import { ItemCard } from './ItemCard';

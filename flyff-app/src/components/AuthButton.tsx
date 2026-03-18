@@ -24,7 +24,7 @@ export function AuthButton({ auth }: Props) {
   }
 
   const meta     = auth.user.user_metadata as Record<string, string> | undefined;
-  const username = meta?.full_name ?? meta?.name ?? meta?.custom_claims?.global_name ?? auth.user.email ?? 'User';
+  const username = meta?.full_name ?? meta?.name ?? auth.user.email ?? 'User';
   const avatarUrl = meta?.avatar_url;
 
   return (

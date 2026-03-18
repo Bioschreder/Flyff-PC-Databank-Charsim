@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { SimulatorState } from '../types';
 import type { AuthState } from '../hooks/useAuth';
-import { useCloudConfigs, type CloudConfig } from '../hooks/useCloudConfigs';
+import { useCloudConfigs } from '../hooks/useCloudConfigs';
 
 // ─── localStorage fallback (used when not logged in) ──────────────────────────
 

@@ -45,7 +45,7 @@ function getWeaponTypeFromItem(item: FlyffItem | undefined): string {
   return 'Sword';
 }
 
-function maxLevelForTier(tier: number): number {
+function _maxLevelForTier(tier: number): number {
   if (tier >= 4) return 190;
   return 120;
 }
@@ -407,7 +407,7 @@ function dstLabel(k: string): [string, string] {
   return STAT_DISPLAY[k] ?? [k.replace('DST_', '').replace(/_/g, ' '), ''];
 }
 
-interface BonusEntry { label: string; value: number; unit: string; source: string }
+type _BonusEntry = { label: string; value: number; unit: string; source: string }
 
 interface ActiveBonusPanelProps {
   equipment: Partial<Record<EquipSlot, EquippedItem>>;
@@ -768,18 +768,7 @@ export function CharacterSimulator({
     : null;
 
   const monsterDmgMult = 1 + computed.monsterDmgPct / 100;
-
-  const dmgVsMonsterMin = monsterStats
-    ? Math.round(calcDmgVsMonster(charAtkMin, monsterStats, simState.level) * monsterDmgMult) : null;
-  const dmgVsMonsterMax = monsterStats
-    ? Math.round(calcDmgVsMonster(charAtkMax, monsterStats, simState.level) * monsterDmgMult) : null;
-
-  const killsNeeded = useMemo(() => {
-    if (!selectedMonster || !expTable.size) return null;
-    const expNeeded = expTable.get(simState.level) ?? 0;
-    if (!expNeeded) return null;
-    return killsForLevelUp(expNeeded, selectedMonster.exp);
-  }, [selectedMonster, expTable, simState.level]);
+  void monsterDmgMult; // passed to CombatStatsPanel via props
 
   const filteredMonsters = useMemo(() => {
     const q = monsterSearch.toLowerCase();
@@ -875,7 +864,7 @@ export function CharacterSimulator({
               equipment={simState.equipment}
               itemMap={itemMap}
               activeSetBonuses={computed.activeSetBonuses}
-              setEffectsDB={setEffects}
+              setEffectsDB={setEffects ?? {}}
               jobId={simState.jobId}
               onSlotClick={setActiveSlot}
               onReset={handleReset}
@@ -1124,7 +1113,7 @@ export function CharacterSimulator({
           jobPrefixDB={jobPrefixes ?? null}
           weaponCardDB={weaponCards ?? null}
           upgradeDB={upgrades ?? null}
-          setEffectsDB={setEffects}
+          setEffectsDB={setEffects ?? {}}
           jobId={simState.jobId}
           gender={simState.gender}
           jobs={jobs}

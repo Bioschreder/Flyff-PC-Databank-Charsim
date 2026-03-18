@@ -139,7 +139,7 @@ export function ItemConfigPanel({
   gender,
   jobs,
   isDualWield,
-  equippedWeapon,
+  equippedWeapon: _equippedWeapon,
   onSave,
   onClose,
 }: Props) {
@@ -313,7 +313,7 @@ export function ItemConfigPanel({
     return null;
   }
 
-  function getGemStatsForType(type: GemSlot['gemType']): string[] {
+  function _getGemStatsForType(type: GemSlot['gemType']): string[] {
     if (type === 'ultimate') return gemStats.ultimate;
     if (type === 'costume') return gemStats.costume;
     return suitGemStats;

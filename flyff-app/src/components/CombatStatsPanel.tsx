@@ -26,6 +26,9 @@ export interface MonsterEntry {
   exp: number;
   rank: string;
   element: string;
+  skillAtkMin: number;
+  skillAtkMax: number;
+  skillMult: number;
 }
 
 export interface PartyState {
